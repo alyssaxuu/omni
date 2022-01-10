@@ -173,7 +173,7 @@ $(document).ready(function(){
 			} else if (action.action == "email") {
 				window.open("mailto:");
 			} else if (action.action == "url") {
-				window.open(action.url);
+				window.open(action.url, "_self");
 			}
 		}
 
