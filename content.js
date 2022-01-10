@@ -1,0 +1,268 @@
+$(document).ready(function(){
+	var isOpen = false;
+  var actions = [];
+
+	// Append the omni into the current page
+  $.get(chrome.runtime.getURL('/content.html'), function(data) {
+    $(data).appendTo('body');
+  });
+
+	// Request actions from the background
+  chrome.runtime.sendMessage({request:"get-actions"}, function(response) {
+    actions = response.actions;
+		populateOmni();
+  });
+
+	// Add actions to the omni
+	function populateOmni() {
+		$("#omni-extension #list").html("");
+		actions.forEach(function(action, index){
+			var keys = "";
+			if (action.keycheck) {
+					keys = "<div class='keys'>";
+					action.keys.forEach(function(key){
+						keys += "<span class='shortcut'>"+key+"</span>";
+					});
+					keys += "</div>";
+			}
+			var img = "<img src='"+action.favIconUrl+"' alt='favicon' onerror='this.src=&quot;"+chrome.runtime.getURL("/assets/globe.svg")+"&quot;' class='icon'>";
+			if (action.emoji) {
+				img = "<span class='emoji-action'>"+action.emojiChar+"</span>"
+			}
+			if (index != 0) {
+				$("#omni-extension #list").append("<div class='item' data-type='"+action.type+"'>"+img+"<div class='item-details'><div class='item-name'>"+action.title+"</div><div class='item-desc'>"+action.desc+"</div></div>"+keys+"<div class='select'>Select <span class='shortcut'>⏎</span></div></div>");
+			} else {
+				$("#omni-extension #list").append("<div class='item item-active' data-type='"+action.type+"'>"+img+"<div class='item-details'><div class='item-name'>"+action.title+"</div><div class='item-desc'>"+action.desc+"</div></div>"+keys+"<div class='select'>Select <span class='shortcut'>⏎</span></div></div>");
+			}
+		})
+		$(".omni-extension #results").html(actions.length+" results");
+	}
+
+	// Add actions to the omni
+	function populateOmniHistory(actions) {
+		$("#omni-extension #list").html("");
+		actions.forEach(function(action, index){
+			var keys = "";
+			if (action.keycheck) {
+					keys = "<div class='keys'>";
+					action.keys.forEach(function(key){
+						keys += "<span class='shortcut'>"+key+"</span>";
+					});
+					keys += "</div>";
+			}
+			var img = "<img src='"+action.favIconUrl+"' alt='favicon' onerror='this.src=&quot;"+chrome.runtime.getURL("/assets/globe.svg")+"&quot;' class='icon'>";
+			if (action.emoji) {
+				img = "<span class='emoji-action'>"+action.emojiChar+"</span>"
+			}
+			if (index != 0) {
+				$("#omni-extension #list").append("<div class='item' data-type='"+action.type+"' data-url='"+action.url+"'>"+img+"<div class='item-details'><div class='item-name'>"+action.title+"</div><div class='item-desc'>"+action.desc+"</div></div>"+keys+"<div class='select'>Select <span class='shortcut'>⏎</span></div></div>");
+			} else {
+				$("#omni-extension #list").append("<div class='item item-active' data-type='"+action.type+"' data-url='"+action.url+"'>"+img+"<div class='item-details'><div class='item-name'>"+action.title+"</div><div class='item-desc'>"+action.desc+"</div></div>"+keys+"<div class='select'>Select <span class='shortcut'>⏎</span></div></div>");
+			}
+		})
+		$(".omni-extension #results").html(actions.length+" results");
+	}
+
+	// Open the omni
+  function openOmni() {
+		chrome.runtime.sendMessage({request:"get-actions"}, function(response) {
+			isOpen = true;
+			actions = response.actions;
+			populateOmni();
+			$("#omni-extension input").val("");
+			$("html, body").stop();
+			$("#omni-extension").removeClass("closing");
+			window.setTimeout(function(){
+				$("#omni-extension input").focus();
+			}, 100);
+		});
+  }
+
+	// Close the omni
+  function closeOmni() {
+		isOpen = false;
+    $("#omni-extension").addClass("closing");
+  }
+
+	// Hover over an action in the omni
+  function hoverItem() {
+    $(".item-active").removeClass("item-active");
+    $(this).addClass("item-active");
+  }
+
+	// Search for an action in the omni
+  function search() {
+    var value = $(this).val().toLowerCase();
+		if (value.startsWith("/history")) {
+			var tempvalue = value.replace("/tabs ", "");
+			var query = "";
+			if (tempvalue != "/history") {
+				query = value.replace("/history ", "");
+			}
+			chrome.runtime.sendMessage({request:"search-history", query:query}, function(response){
+				populateOmniHistory(response.history);
+			});
+		} else {
+			populateOmni();
+			$("#omni-extension #list .item").filter(function(){
+				if (value.startsWith("/tabs")) {
+					var tempvalue = value.replace("/tabs ", "");
+					if (tempvalue == "/tabs") {
+						$(this).toggle($(this).attr("data-type") == "tab");
+					} else {
+						tempvalue = value.replace("/tabs ", "");
+						$(this).toggle(($(this).find(".item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && $(this).attr("data-type") == "tab");
+					}
+				} else if (value.startsWith("/bookmarks")) {
+					var tempvalue = value.replace("/bookmarks ", "");
+					if (tempvalue == "/bookmarks") {
+						$(this).toggle($(this).attr("data-type") == "bookmark");
+					} else {
+						tempvalue = value.replace("/bookmarks ", "");
+						$(this).toggle(($(this).find(".item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && $(this).attr("data-type") == "bookmark");
+					}
+				} else if (value.startsWith("/remove")) {
+					var tempvalue = value.replace("/remove ", "");
+					if (tempvalue == "/remove") {
+						$(this).toggle($(this).attr("data-type") == "bookmark" || $(this).attr("data-type") == "tab");
+					} else {
+						tempvalue = value.replace("/remove ", "");
+						$(this).toggle(($(this).find(".item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && ($(this).attr("data-type") == "bookmark" || $(this).attr("data-type") == "tab"));
+					}
+				} else if (value.startsWith("/actions")) {
+					var tempvalue = value.replace("/actions ", "");
+					if (tempvalue == "/actions") {
+						$(this).toggle($(this).attr("data-type") == "action");
+					} else {
+						tempvalue = value.replace("/actions ", "");
+						$(this).toggle(($(this).find(".item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && $(this).attr("data-type") == "action");
+					}
+				} else {
+					$(this).toggle($(this).find(".item-name").text().toLowerCase().indexOf(value) > -1 || $(this).find(".item-desc").text().toLowerCase().indexOf(value) > -1);
+				}
+			});
+		}
+		$(".omni-extension #results").html($("#omni-extension #list .item:visible").length+" results");
+  }
+
+	// Handle actions from the omni
+	function handleAction() {
+		var action = actions.find(x => x.title == $(".item-active .item-name").text());
+		closeOmni();
+		if ($(".omni-extension input").val().toLowerCase().startsWith("/remove")) {
+			chrome.runtime.sendMessage({request:"remove", type:action.type, action:action});
+		} else if ($(".omni-extension input").val().toLowerCase().startsWith("/history")) {
+			window.open($(".item-active").attr("data-url"), "_self");
+		} else {
+			chrome.runtime.sendMessage({request:action.action, tab:action});
+			if (action.action == "bookmark") {
+				window.open(action.url, "_self");
+			} else if (action.action == "scroll-bottom") {
+				window.scrollTo(0,document.body.scrollHeight);
+			} else if (action.action == "scroll-top") {
+				window.scrollTo(0,0);
+			} else if (action.action == "close-tab") {
+				window.close();
+			} else if (action.action == "navigation") {
+				window.open(action.url, "_self");
+			} else if (action.action == "fullscreen") {
+				var elem = document.documentElement;
+				elem.requestFullscreen();
+			} else if (action.action == "new-tab") {
+				window.open("");
+			} else if (action.action == "email") {
+				window.open("mailto:");
+			} else if (action.action == "url") {
+				window.open(action.url);
+			}
+		}
+
+		// Fetch actions again
+		chrome.runtime.sendMessage({request:"get-actions"}, function(response) {
+			actions = response.actions;
+			populateOmni();
+		});
+	}
+
+	// Customize the shortcut to open the Omni box
+	function openShortcuts() {
+		chrome.runtime.sendMessage({request:"extensions/shortcuts"});
+	}
+
+
+	// Check which keys are down
+	var down = [];
+	$(document).keydown(function(e) {
+			down[e.keyCode] = true;
+	}).keyup(function(e) {
+		if (down[18] && down[16] && down[80]) {
+			if (actions.find(x => x.action == "pin") != undefined) {
+				chrome.runtime.sendMessage({request:"pin-tab"});
+			} else {
+				chrome.runtime.sendMessage({request:"unpin-tab"});
+			}
+			chrome.runtime.sendMessage({request:"get-actions"}, function(response) {
+				actions = response.actions;
+				populateOmni();
+			});
+		} else if (down[18] && down[16] && down[77]) {
+			if (actions.find(x => x.action == "mute") != undefined) {
+				chrome.runtime.sendMessage({request:"mute-tab"});
+			} else {
+				chrome.runtime.sendMessage({request:"unmute-tab"});
+			}
+			chrome.runtime.sendMessage({request:"get-actions"}, function(response) {
+				actions = response.actions;
+				populateOmni();
+			});
+		} else if (down[18] && down[16] && down[67]) {
+			window.open("mailto:");
+		}
+
+		if (down[38]) {
+      // Up key
+      if ($(".item-active").prevAll("div").not(":hidden").first().length) {
+        var previous = $(".item-active").prevAll("div").not(":hidden").first();
+        $(".item-active").removeClass("item-active");
+        previous.addClass("item-active");
+        previous[0].scrollIntoView({block:"nearest", inline:"nearest"});
+      }
+
+    } else if (down[40]) {
+      // Down key
+      if ($(".item-active").nextAll("div").not(":hidden").first().length) {
+        var next = $(".item-active").nextAll("div").not(":hidden").first();
+        $(".item-active").removeClass("item-active");
+        next.addClass("item-active");
+        next[0].scrollIntoView({block:"nearest", inline:"nearest"});
+      }
+    } else if (down[27] && isOpen) {
+      // Esc key
+      closeOmni();
+    } else if (down[13] && isOpen) {
+			// Enter key
+			handleAction();
+		}
+
+		down[e.keyCode] = false;
+	});
+	
+	// Recieve messages from background
+	chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+		if (message.request == "open-omni") {
+			if (isOpen) {
+				closeOmni();
+			} else {
+				openOmni();
+			}
+		}
+	});
+
+
+  // Events
+	$(document).on("click", "#open-page-omni-extension-thing", openShortcuts);
+  $(document).on("mouseover", ".omni-extension .item:not(.item-active)", hoverItem);
+  $(document).on("input", ".omni-extension input", search);
+	$(document).on("click", ".item-active", handleAction);
+	$(document).on("click", ".omni-extension #overlay", closeOmni);
+});
