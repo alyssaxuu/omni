@@ -5,6 +5,8 @@ The most powerful interface for Chrome 🔥
 
 With Omni you can use Chrome like a pro. Manage tabs, bookmarks, your browser history, perform all sorts of actions and more with a simple command interface.
 
+[Get it now](https://chrome.google.com/webstore/detail/omni/mapjgeachilmcbbokkgcbgpbakaaeehi?hl=en&authuser=0)
+
 Made by [Alyssa X](https://alyssax.com)
 
 ## Table of contents
