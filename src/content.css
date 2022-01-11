@@ -53,7 +53,7 @@
  font-weight: 700;
  src: url('chrome-extension://__MSG_@@extension_id__/assets/Inter-Bold.ttf');
 }
-.omni-extension .item-details * {
+.omni-extension .omni-item-details * {
 	line-height: normal;
 }
 .omni-extension {
@@ -87,15 +87,15 @@
   transition: all .2s cubic-bezier(.05,.03,.35,1);
 	display: block;
 }
-.closing #omni {
+.omni-closing #omni {
   transform: scale(.9);
   opacity: 0;
 	display: none!important;
 }
-.closing {
+.omni-closing {
 	pointer-events: none;
 }
-.omni-extension #overlay {
+.omni-extension #omni-overlay {
   height: 100%;
   width: 100%;
   position: fixed;
@@ -106,10 +106,10 @@
   opacity: .6;
   transition: all .1s cubic-bezier(.05,.03,.35,1);
 }
-.closing #overlay {
+.omni-closing #omni-overlay {
   opacity: 0!important;
 }
-.omni-extension #head {
+.omni-extension #omni-head {
   height: 50px;
   line-height: 50px;
   width: 95%;
@@ -117,22 +117,22 @@
   margin-right: auto;
   border-bottom: 1px solid var(--border);
 }
-.omni-extension #name {
+.omni-extension #omni-name {
   color: var(--text);
   font-size: 12px;
   font-weight: 600;
   float: left;
 }
-.omni-extension #close {
+.omni-extension #omni-close {
   color: var(--text-3);
   float: right;
   font-size: 12px;
   font-weight: 500;
 }
-.omni-extension #close span {
+.omni-extension #omni-close span {
   margin-left: 3px;
 }
-.omni-extension .shortcut {
+.omni-extension .omni-shortcut {
   display: inline-block;
 	font-size: 13px;
   border-radius: 5px;
@@ -172,7 +172,7 @@
 .omni-extension ::-ms-input-placeholder {
   color: var(--placeholder);
 }
-.omni-extension #list {
+.omni-extension #omni-list {
   width: 100%;
   overflow: auto;
   height: 100%;
@@ -180,18 +180,18 @@
   border-top: 1px solid var(--border);
   position: relative;
 }
-.omni-extension .item {
+.omni-extension .omni-item {
   height: 60px;
   width: 100%;
 }
-.omni-extension .item:hover {
+.omni-extension .omni-item:hover {
   cursor: pointer;
 }
-.omni-extension .item-active {
+.omni-extension .omni-item-active {
   background-color: var(--select);
   position: relative;
 }
-.omni-extension .item-active:before {
+.omni-extension .omni-item-active:before {
   height: 100%;
   position: absolute;
   display: block;
@@ -199,7 +199,7 @@
   width: 2px;
   background-color: var(--accent);
 }
-.omni-extension .select {
+.omni-extension .omni-select {
   float: right;
   vertical-align: middle;
   color: var(--text-3);
@@ -209,13 +209,13 @@
   margin-top: 20px;
   margin-right: 5%;
 }
-.omni-extension .select span {
+.omni-extension .omni-select span {
   margin-left: 3px;
 }
-.omni-extension .item-active .select {
+.omni-extension .omni-item-active .omni-select {
   display: block!important;
 }
-.omni-extension .icon {
+.omni-extension .omni-icon {
   width: 20px;
   height: 20px;
   margin-left: 5%;
@@ -223,7 +223,7 @@
   vertical-align: middle;
   margin-top: -12px;
 }
-.omni-extension .emoji-action {
+.omni-extension .omni-emoji-action {
 	display: inline-block;
 	vertical-align: middle;
 	margin-top: -12px;
@@ -233,13 +233,13 @@
 	margin-left: 5%;
 	font-size: 18px;
 }
-.omni-extension .item-details {
+.omni-extension .omni-item-details {
   display: inline-block;
   margin-left: 10px;
   vertical-align: middle;
   margin-top: 10px;
 }
-.omni-extension .item-name {
+.omni-extension .omni-item-name {
   color: var(--text-2);
   font-size: 14px;
   font-weight: 500;
@@ -248,15 +248,15 @@
   text-overflow: ellipsis;
   width: 450px;
 }
-.omni-extension .item-active .item-name {
+.omni-extension .omni-item-active .omni-item-name {
   color: var(--text)!important;
 }
-.omni-extension .item-desc {
+.omni-extension .omni-item-desc {
   color: var(--text-3);
   margin-top: 5px;
 	font-size: 14px;
 }
-.omni-extension #footer {
+.omni-extension #omni-footer {
   height: 45px;
   line-height: 45px;
   border-top: 1px solid var(--border);
@@ -264,33 +264,33 @@
   margin-left: auto;
   margin-right: auto;
 }
-.omni-extension #results {
+.omni-extension #omni-results {
   color: var(--text-3);
   font-size: 12px;
   font-weight: 500;
   float: left;
 }
-.omni-extension #arrows {
+.omni-extension #omni-arrows {
   color: var(--text-3);
   font-size: 12px;
   font-weight: 500;
   float: right;
 }
-.omni-extension #arrows span {
+.omni-extension #omni-arrows span {
   margin-left: 3px;
   margin-right: 3px;
 }
-.omni-extension .keys {
+.omni-extension .omni-keys {
   float: right;
   vertical-align: middle;
   font-weight: 500;
   margin-top: 20px;
   margin-right: 5%;
 }
-.omni-extension .item-active .keys {
+.omni-extension .omni-item-active .omni-keys {
   display: none!important;
 }
-.omni-extension .keys span {
+.omni-extension .omni-keys span {
   margin-left: 3px;
 }
 #body-wrap {

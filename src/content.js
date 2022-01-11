@@ -19,48 +19,48 @@ $(document).ready(function(){
 		actions.forEach(function(action, index){
 			var keys = "";
 			if (action.keycheck) {
-					keys = "<div class='keys'>";
+					keys = "<div class='omni-keys'>";
 					action.keys.forEach(function(key){
-						keys += "<span class='shortcut'>"+key+"</span>";
+						keys += "<span class='omni-shortcut'>"+key+"</span>";
 					});
 					keys += "</div>";
 			}
-			var img = "<img src='"+action.favIconUrl+"' alt='favicon' onerror='this.src=&quot;"+chrome.runtime.getURL("/assets/globe.svg")+"&quot;' class='icon'>";
+			var img = "<img src='"+action.favIconUrl+"' alt='favicon' onerror='this.src=&quot;"+chrome.runtime.getURL("/assets/globe.svg")+"&quot;' class='omni-icon'>";
 			if (action.emoji) {
-				img = "<span class='emoji-action'>"+action.emojiChar+"</span>"
+				img = "<span class='omni-emoji-action'>"+action.emojiChar+"</span>"
 			}
 			if (index != 0) {
-				$("#omni-extension #list").append("<div class='item' data-type='"+action.type+"'>"+img+"<div class='item-details'><div class='item-name'>"+action.title+"</div><div class='item-desc'>"+action.desc+"</div></div>"+keys+"<div class='select'>Select <span class='shortcut'>⏎</span></div></div>");
+				$("#omni-extension #omni-list").append("<div class='omni-item' data-type='"+action.type+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.desc+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>");
 			} else {
-				$("#omni-extension #list").append("<div class='item item-active' data-type='"+action.type+"'>"+img+"<div class='item-details'><div class='item-name'>"+action.title+"</div><div class='item-desc'>"+action.desc+"</div></div>"+keys+"<div class='select'>Select <span class='shortcut'>⏎</span></div></div>");
+				$("#omni-extension #omni-list").append("<div class='omni-item omni-item-active' data-type='"+action.type+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.desc+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>");
 			}
 		})
-		$(".omni-extension #results").html(actions.length+" results");
+		$(".omni-extension #omni-results").html(actions.length+" results");
 	}
 
 	// Add actions to the omni
 	function populateOmniHistory(actions) {
-		$("#omni-extension #list").html("");
+		$("#omni-extension #omni-list").html("");
 		actions.forEach(function(action, index){
 			var keys = "";
 			if (action.keycheck) {
-					keys = "<div class='keys'>";
+					keys = "<div class='omni-keys'>";
 					action.keys.forEach(function(key){
-						keys += "<span class='shortcut'>"+key+"</span>";
+						keys += "<span class='omni-shortcut'>"+key+"</span>";
 					});
 					keys += "</div>";
 			}
-			var img = "<img src='"+action.favIconUrl+"' alt='favicon' onerror='this.src=&quot;"+chrome.runtime.getURL("/assets/globe.svg")+"&quot;' class='icon'>";
+			var img = "<img src='"+action.favIconUrl+"' alt='favicon' onerror='this.src=&quot;"+chrome.runtime.getURL("/assets/globe.svg")+"&quot;' class='omni-icon'>";
 			if (action.emoji) {
-				img = "<span class='emoji-action'>"+action.emojiChar+"</span>"
+				img = "<span class='omni-emoji-action'>"+action.emojiChar+"</span>"
 			}
 			if (index != 0) {
-				$("#omni-extension #list").append("<div class='item' data-type='"+action.type+"' data-url='"+action.url+"'>"+img+"<div class='item-details'><div class='item-name'>"+action.title+"</div><div class='item-desc'>"+action.desc+"</div></div>"+keys+"<div class='select'>Select <span class='shortcut'>⏎</span></div></div>");
+				$("#omni-extension #omni-list").append("<div class='omni-item' data-type='"+action.type+"' data-url='"+action.url+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.desc+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>");
 			} else {
-				$("#omni-extension #list").append("<div class='item item-active' data-type='"+action.type+"' data-url='"+action.url+"'>"+img+"<div class='item-details'><div class='item-name'>"+action.title+"</div><div class='item-desc'>"+action.desc+"</div></div>"+keys+"<div class='select'>Select <span class='shortcut'>⏎</span></div></div>");
+				$("#omni-extension #omni-list").append("<div class='omni-item omni-item-active' data-type='"+action.type+"' data-url='"+action.url+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.desc+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>");
 			}
 		})
-		$(".omni-extension #results").html(actions.length+" results");
+		$(".omni-extension #omni-results").html(actions.length+" results");
 	}
 
 	// Open the omni
@@ -71,7 +71,7 @@ $(document).ready(function(){
 			populateOmni();
 			$("#omni-extension input").val("");
 			$("html, body").stop();
-			$("#omni-extension").removeClass("closing");
+			$("#omni-extension").removeClass("omni-closing");
 			window.setTimeout(function(){
 				$("#omni-extension input").focus();
 			}, 100);
@@ -81,13 +81,13 @@ $(document).ready(function(){
 	// Close the omni
   function closeOmni() {
 		isOpen = false;
-    $("#omni-extension").addClass("closing");
+    $("#omni-extension").addClass("omni-closing");
   }
 
 	// Hover over an action in the omni
   function hoverItem() {
-    $(".item-active").removeClass("item-active");
-    $(this).addClass("item-active");
+    $(".omni-item-active").removeClass("omni-item-active");
+    $(this).addClass("omni-item-active");
   }
 
 	// Search for an action in the omni
@@ -104,14 +104,14 @@ $(document).ready(function(){
 			});
 		} else {
 			populateOmni();
-			$("#omni-extension #list .item").filter(function(){
+			$("#omni-extension #omni-list .omni-item").filter(function(){
 				if (value.startsWith("/tabs")) {
 					var tempvalue = value.replace("/tabs ", "");
 					if (tempvalue == "/tabs") {
 						$(this).toggle($(this).attr("data-type") == "tab");
 					} else {
 						tempvalue = value.replace("/tabs ", "");
-						$(this).toggle(($(this).find(".item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && $(this).attr("data-type") == "tab");
+						$(this).toggle(($(this).find(".omni-item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".omni-item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && $(this).attr("data-type") == "tab");
 					}
 				} else if (value.startsWith("/bookmarks")) {
 					var tempvalue = value.replace("/bookmarks ", "");
@@ -119,7 +119,7 @@ $(document).ready(function(){
 						$(this).toggle($(this).attr("data-type") == "bookmark");
 					} else {
 						tempvalue = value.replace("/bookmarks ", "");
-						$(this).toggle(($(this).find(".item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && $(this).attr("data-type") == "bookmark");
+						$(this).toggle(($(this).find(".omni-item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".omni-item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && $(this).attr("data-type") == "bookmark");
 					}
 				} else if (value.startsWith("/remove")) {
 					var tempvalue = value.replace("/remove ", "");
@@ -127,7 +127,7 @@ $(document).ready(function(){
 						$(this).toggle($(this).attr("data-type") == "bookmark" || $(this).attr("data-type") == "tab");
 					} else {
 						tempvalue = value.replace("/remove ", "");
-						$(this).toggle(($(this).find(".item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && ($(this).attr("data-type") == "bookmark" || $(this).attr("data-type") == "tab"));
+						$(this).toggle(($(this).find(".omni-item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".omni-item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && ($(this).attr("data-type") == "bookmark" || $(this).attr("data-type") == "tab"));
 					}
 				} else if (value.startsWith("/actions")) {
 					var tempvalue = value.replace("/actions ", "");
@@ -135,19 +135,19 @@ $(document).ready(function(){
 						$(this).toggle($(this).attr("data-type") == "action");
 					} else {
 						tempvalue = value.replace("/actions ", "");
-						$(this).toggle(($(this).find(".item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && $(this).attr("data-type") == "action");
+						$(this).toggle(($(this).find(".omni-item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".omni-item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && $(this).attr("data-type") == "action");
 					}
 				} else {
-					$(this).toggle($(this).find(".item-name").text().toLowerCase().indexOf(value) > -1 || $(this).find(".item-desc").text().toLowerCase().indexOf(value) > -1);
+					$(this).toggle($(this).find(".omni-item-name").text().toLowerCase().indexOf(value) > -1 || $(this).find(".omni-item-desc").text().toLowerCase().indexOf(value) > -1);
 				}
 			});
 		}
-		$(".omni-extension #results").html($("#omni-extension #list .item:visible").length+" results");
+		$(".omni-extension #omni-results").html($("#omni-extension #omni-list .omni-item:visible").length+" results");
   }
 
 	// Handle actions from the omni
 	function handleAction() {
-		var action = actions.find(x => x.title == $(".item-active .item-name").text());
+		var action = actions.find(x => x.title == $(".omni-item-active .omni-item-name").text());
 		closeOmni();
 		if ($(".omni-extension input").val().toLowerCase().startsWith("/remove")) {
 			chrome.runtime.sendMessage({request:"remove", type:action.type, action:action});
@@ -221,19 +221,19 @@ $(document).ready(function(){
 
 		if (down[38]) {
       // Up key
-      if ($(".item-active").prevAll("div").not(":hidden").first().length) {
-        var previous = $(".item-active").prevAll("div").not(":hidden").first();
-        $(".item-active").removeClass("item-active");
-        previous.addClass("item-active");
+      if ($(".omni-item-active").prevAll("div").not(":hidden").first().length) {
+        var previous = $(".omni-item-active").prevAll("div").not(":hidden").first();
+        $(".omni-item-active").removeClass("item-active");
+        previous.addClass("omni-item-active");
         previous[0].scrollIntoView({block:"nearest", inline:"nearest"});
       }
 
     } else if (down[40]) {
       // Down key
-      if ($(".item-active").nextAll("div").not(":hidden").first().length) {
-        var next = $(".item-active").nextAll("div").not(":hidden").first();
-        $(".item-active").removeClass("item-active");
-        next.addClass("item-active");
+      if ($(".omni-item-active").nextAll("div").not(":hidden").first().length) {
+        var next = $(".omni-item-active").nextAll("div").not(":hidden").first();
+        $(".omni-item-active").removeClass("omni-item-active");
+        next.addClass("omni-item-active");
         next[0].scrollIntoView({block:"nearest", inline:"nearest"});
       }
     } else if (down[27] && isOpen) {
@@ -261,8 +261,8 @@ $(document).ready(function(){
 
   // Events
 	$(document).on("click", "#open-page-omni-extension-thing", openShortcuts);
-  $(document).on("mouseover", ".omni-extension .item:not(.item-active)", hoverItem);
+  $(document).on("mouseover", ".omni-extension .omni-item:not(.omni-item-active)", hoverItem);
   $(document).on("input", ".omni-extension input", search);
-	$(document).on("click", ".item-active", handleAction);
-	$(document).on("click", ".omni-extension #overlay", closeOmni);
+	$(document).on("click", ".omni-item-active", handleAction);
+	$(document).on("click", ".omni-extension #omni-overlay", closeOmni);
 });
