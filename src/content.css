@@ -1,67 +1,67 @@
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #1e2128;
-    --border: #35373e;
-    --text: #f1f1f1;
-    --text-2: #c5c6ca;
-    --text-3: #a5a5ae;
-    --select: #17191e;
-    --accent: #6068d2;
-    --accent-hover: #484fac;
-    --shortcut: #383e4a;
-    --placeholder: #63687b;
-    --background-2: #292d36;
-  }
+	:root {
+		--background: #1E2128;
+		--border: #35373E;
+		--text: #F1F1F1;
+		--text-2: #C5C6CA;
+		--text-3: #A5A5AE;
+		--select: #17191E;
+		--accent: #6068D2;
+		--accent-hover: #484FAC;
+		--shortcut: #383E4A;
+		--placeholder: #63687B;
+		--background-2: #292D36;
+	}
 }
 @media (prefers-color-scheme: light) {
-  :root {
-    --background: #fafcff;
-    --border: #f2f3fb;
-    --text: #2b2d41;
-    --text-2: #2b2d41;
-    --text-3: #929db2;
-    --select: #eff3f9;
-    --accent: #6068d2;
-    --accent-hover: #484fac;
-    --shortcut: #dadeea;
-    --placeholder: #bac2d1;
-    --background-2: #292d36;
-  }
+	:root {
+		--background: #FAFCFF;
+		--border: #F2F3FB;
+		--text: #2B2D41;
+		--text-2: #2B2D41;
+		--text-3: #929DB2;
+		--select: #EFF3F9;
+		--accent: #6068D2;
+		--accent-hover: #484FAC;
+		--shortcut: #DADEEA;
+		--placeholder: #BAC2D1;
+		--background-2: #292D36;
+	}
 }
 
 @font-face {
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 400;
-  src: url("chrome-extension://__MSG_@@extension_id__/assets/Inter-Regular.ttf");
+ font-family: 'Inter';
+ font-style: normal;
+ font-weight: 400;
+ src: url('chrome-extension://__MSG_@@extension_id__/assets/Inter-Regular.ttf');
 }
 @font-face {
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 500;
-  src: url("chrome-extension://__MSG_@@extension_id__/assets/Inter-Medium.ttf");
+ font-family: 'Inter';
+ font-style: normal;
+ font-weight: 500;
+ src: url('chrome-extension://__MSG_@@extension_id__/assets/Inter-Medium.ttf');
 }
 @font-face {
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 600;
-  src: url("chrome-extension://__MSG_@@extension_id__/assets/Inter-SemiBold.ttf");
+ font-family: 'Inter';
+ font-style: normal;
+ font-weight: 600;
+ src: url('chrome-extension://__MSG_@@extension_id__/assets/Inter-SemiBold.ttf');
 }
 @font-face {
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 700;
-  src: url("chrome-extension://__MSG_@@extension_id__/assets/Inter-Bold.ttf");
+ font-family: 'Inter';
+ font-style: normal;
+ font-weight: 700;
+ src: url('chrome-extension://__MSG_@@extension_id__/assets/Inter-Bold.ttf');
 }
 .omni-extension .omni-item-details * {
-  line-height: normal;
+	line-height: normal;
 }
 .omni-extension {
-  font-family: Inter !important;
-  z-index: 99999999999;
+  font-family: Inter!important;
+	z-index: 99999999999;
 }
 .omni-extension #omni-wrap {
-  position: fixed;
+	position: fixed;
   width: 700px;
   border: 1px solid transparent;
   border-radius: 5px;
@@ -72,7 +72,7 @@
   left: 0px;
   z-index: 9999999999;
   height: 540px;
-  transition: all 0.2s cubic-bezier(0.05, 0.03, 0.35, 1);
+  transition: all .2s cubic-bezier(.05,.03,.35,1);
 }
 .omni-extension #omni {
   position: absolute;
@@ -84,16 +84,16 @@
   left: 0px;
   z-index: 9999999998;
   height: fit-content;
-  transition: all 0.2s cubic-bezier(0.05, 0.03, 0.35, 1);
-  display: block;
+  transition: all .2s cubic-bezier(.05,.03,.35,1);
+	display: block;
 }
 .omni-closing #omni {
-  transform: scale(0.9);
+  transform: scale(.9);
   opacity: 0;
-  display: none !important;
+	display: none!important;
 }
 .omni-closing {
-  pointer-events: none;
+	pointer-events: none;
 }
 .omni-extension #omni-overlay {
   height: 100%;
@@ -103,11 +103,11 @@
   left: 0px;
   background-color: #000;
   z-index: 9999;
-  opacity: 0.6;
-  transition: all 0.1s cubic-bezier(0.05, 0.03, 0.35, 1);
+  opacity: .6;
+  transition: all .1s cubic-bezier(.05,.03,.35,1);
 }
 .omni-closing #omni-overlay {
-  opacity: 0 !important;
+  opacity: 0!important;
 }
 .omni-extension #omni-head {
   height: 50px;
@@ -134,7 +134,7 @@
 }
 .omni-extension .omni-shortcut {
   display: inline-block;
-  font-size: 13px;
+	font-size: 13px;
   border-radius: 5px;
   background-color: var(--shortcut);
   color: var(--text);
@@ -158,7 +158,7 @@
   display: block;
   color: var(--text);
   caret-color: var(--accent);
-  font-family: Inter !important;
+	font-family: Inter!important;
   margin-top: 5px;
   margin-bottom: 5px;
   box-sizing: border-box;
@@ -214,7 +214,7 @@
   margin-left: 3px;
 }
 .omni-extension .omni-item-active .omni-select {
-  display: block !important;
+  display: block!important;
 }
 .omni-extension .omni-icon {
   width: 20px;
@@ -225,14 +225,14 @@
   margin-top: -12px;
 }
 .omni-extension .omni-emoji-action {
-  display: inline-block;
-  vertical-align: middle;
-  margin-top: -12px;
-  width: 20px;
-  height: 20px;
-  text-align: center;
-  margin-left: 5%;
-  font-size: 18px;
+	display: inline-block;
+	vertical-align: middle;
+	margin-top: -12px;
+	width: 20px;
+	height: 20px;
+	text-align: center;
+	margin-left: 5%;
+	font-size: 18px;
 }
 .omni-extension .omni-item-details {
   display: inline-block;
@@ -250,12 +250,12 @@
   width: 450px;
 }
 .omni-extension .omni-item-active .omni-item-name {
-  color: var(--text) !important;
+  color: var(--text)!important;
 }
 .omni-extension .omni-item-desc {
   color: var(--text-3);
   margin-top: 5px;
-  font-size: 14px;
+	font-size: 14px;
 }
 .omni-extension #omni-footer {
   height: 45px;
@@ -289,7 +289,7 @@
   margin-right: 5%;
 }
 .omni-extension .omni-item-active .omni-keys {
-  display: none !important;
+  display: none!important;
 }
 .omni-extension .omni-keys span {
   margin-left: 3px;
