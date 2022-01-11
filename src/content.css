@@ -158,6 +158,7 @@
   display: block;
   color: var(--text);
   caret-color: var(--accent);
+	font-family: Inter!important;
   margin-top: 5px;
   margin-bottom: 5px;
   box-sizing: border-box;
