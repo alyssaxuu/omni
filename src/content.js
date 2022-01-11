@@ -1,268 +1,425 @@
-$(document).ready(function(){
-	var isOpen = false;
+$(document).ready(function () {
+  var isOpen = false;
   var actions = [];
 
-	// Append the omni into the current page
-  $.get(chrome.runtime.getURL('/content.html'), function(data) {
-    $(data).appendTo('body');
+  // Append the omni into the current page
+  $.get(chrome.runtime.getURL("/content.html"), function (data) {
+    $(data).appendTo("body");
   });
 
-	// Request actions from the background
-  chrome.runtime.sendMessage({request:"get-actions"}, function(response) {
+  // Request actions from the background
+  chrome.runtime.sendMessage({ request: "get-actions" }, function (response) {
     actions = response.actions;
-		populateOmni();
+    populateOmni();
   });
 
-	// Add actions to the omni
-	function populateOmni() {
-		$("#omni-extension #list").html("");
-		actions.forEach(function(action, index){
-			var keys = "";
-			if (action.keycheck) {
-					keys = "<div class='omni-keys'>";
-					action.keys.forEach(function(key){
-						keys += "<span class='omni-shortcut'>"+key+"</span>";
-					});
-					keys += "</div>";
-			}
-			var img = "<img src='"+action.favIconUrl+"' alt='favicon' onerror='this.src=&quot;"+chrome.runtime.getURL("/assets/globe.svg")+"&quot;' class='omni-icon'>";
-			if (action.emoji) {
-				img = "<span class='omni-emoji-action'>"+action.emojiChar+"</span>"
-			}
-			if (index != 0) {
-				$("#omni-extension #omni-list").append("<div class='omni-item' data-type='"+action.type+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.desc+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>");
-			} else {
-				$("#omni-extension #omni-list").append("<div class='omni-item omni-item-active' data-type='"+action.type+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.desc+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>");
-			}
-		})
-		$(".omni-extension #omni-results").html(actions.length+" results");
-	}
-
-	// Add actions to the omni
-	function populateOmniHistory(actions) {
-		$("#omni-extension #omni-list").html("");
-		actions.forEach(function(action, index){
-			var keys = "";
-			if (action.keycheck) {
-					keys = "<div class='omni-keys'>";
-					action.keys.forEach(function(key){
-						keys += "<span class='omni-shortcut'>"+key+"</span>";
-					});
-					keys += "</div>";
-			}
-			var img = "<img src='"+action.favIconUrl+"' alt='favicon' onerror='this.src=&quot;"+chrome.runtime.getURL("/assets/globe.svg")+"&quot;' class='omni-icon'>";
-			if (action.emoji) {
-				img = "<span class='omni-emoji-action'>"+action.emojiChar+"</span>"
-			}
-			if (index != 0) {
-				$("#omni-extension #omni-list").append("<div class='omni-item' data-type='"+action.type+"' data-url='"+action.url+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.desc+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>");
-			} else {
-				$("#omni-extension #omni-list").append("<div class='omni-item omni-item-active' data-type='"+action.type+"' data-url='"+action.url+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.desc+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>");
-			}
-		})
-		$(".omni-extension #omni-results").html(actions.length+" results");
-	}
-
-	// Open the omni
-  function openOmni() {
-		chrome.runtime.sendMessage({request:"get-actions"}, function(response) {
-			isOpen = true;
-			actions = response.actions;
-			populateOmni();
-			$("#omni-extension input").val("");
-			$("html, body").stop();
-			$("#omni-extension").removeClass("omni-closing");
-			window.setTimeout(function(){
-				$("#omni-extension input").focus();
-			}, 100);
-		});
+  // Add actions to the omni
+  function populateOmni() {
+    $("#omni-extension #list").html("");
+    actions.forEach(function (action, index) {
+      var keys = "";
+      if (action.keycheck) {
+        keys = "<div class='omni-keys'>";
+        action.keys.forEach(function (key) {
+          keys += "<span class='omni-shortcut'>" + key + "</span>";
+        });
+        keys += "</div>";
+      }
+      var img =
+        "<img src='" +
+        action.favIconUrl +
+        "' alt='favicon' onerror='this.src=&quot;" +
+        chrome.runtime.getURL("/assets/globe.svg") +
+        "&quot;' class='omni-icon'>";
+      if (action.emoji) {
+        img = "<span class='omni-emoji-action'>" + action.emojiChar + "</span>";
+      }
+      if (index != 0) {
+        $("#omni-extension #omni-list").append(
+          "<div class='omni-item' data-type='" +
+            action.type +
+            "'>" +
+            img +
+            "<div class='omni-item-details'><div class='omni-item-name'>" +
+            action.title +
+            "</div><div class='omni-item-desc'>" +
+            action.desc +
+            "</div></div>" +
+            keys +
+            "<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>"
+        );
+      } else {
+        $("#omni-extension #omni-list").append(
+          "<div class='omni-item omni-item-active' data-type='" +
+            action.type +
+            "'>" +
+            img +
+            "<div class='omni-item-details'><div class='omni-item-name'>" +
+            action.title +
+            "</div><div class='omni-item-desc'>" +
+            action.desc +
+            "</div></div>" +
+            keys +
+            "<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>"
+        );
+      }
+    });
+    $(".omni-extension #omni-results").html(actions.length + " results");
   }
 
-	// Close the omni
+  // Add actions to the omni
+  function populateOmniHistory(actions) {
+    $("#omni-extension #omni-list").html("");
+    actions.forEach(function (action, index) {
+      var keys = "";
+      if (action.keycheck) {
+        keys = "<div class='omni-keys'>";
+        action.keys.forEach(function (key) {
+          keys += "<span class='omni-shortcut'>" + key + "</span>";
+        });
+        keys += "</div>";
+      }
+      var img =
+        "<img src='" +
+        action.favIconUrl +
+        "' alt='favicon' onerror='this.src=&quot;" +
+        chrome.runtime.getURL("/assets/globe.svg") +
+        "&quot;' class='omni-icon'>";
+      if (action.emoji) {
+        img = "<span class='omni-emoji-action'>" + action.emojiChar + "</span>";
+      }
+      if (index != 0) {
+        $("#omni-extension #omni-list").append(
+          "<div class='omni-item' data-type='" +
+            action.type +
+            "' data-url='" +
+            action.url +
+            "'>" +
+            img +
+            "<div class='omni-item-details'><div class='omni-item-name'>" +
+            action.title +
+            "</div><div class='omni-item-desc'>" +
+            action.desc +
+            "</div></div>" +
+            keys +
+            "<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>"
+        );
+      } else {
+        $("#omni-extension #omni-list").append(
+          "<div class='omni-item omni-item-active' data-type='" +
+            action.type +
+            "' data-url='" +
+            action.url +
+            "'>" +
+            img +
+            "<div class='omni-item-details'><div class='omni-item-name'>" +
+            action.title +
+            "</div><div class='omni-item-desc'>" +
+            action.desc +
+            "</div></div>" +
+            keys +
+            "<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>"
+        );
+      }
+    });
+    $(".omni-extension #omni-results").html(actions.length + " results");
+  }
+
+  // Open the omni
+  function openOmni() {
+    chrome.runtime.sendMessage({ request: "get-actions" }, function (response) {
+      isOpen = true;
+      actions = response.actions;
+      populateOmni();
+      $("#omni-extension input").val("");
+      $("html, body").stop();
+      $("#omni-extension").removeClass("omni-closing");
+      window.setTimeout(function () {
+        $("#omni-extension input").focus();
+      }, 100);
+    });
+  }
+
+  // Close the omni
   function closeOmni() {
-		isOpen = false;
+    isOpen = false;
     $("#omni-extension").addClass("omni-closing");
   }
 
-	// Hover over an action in the omni
+  // Hover over an action in the omni
   function hoverItem() {
     $(".omni-item-active").removeClass("omni-item-active");
     $(this).addClass("omni-item-active");
   }
 
-	// Search for an action in the omni
+  // Search for an action in the omni
   function search() {
     var value = $(this).val().toLowerCase();
-		if (value.startsWith("/history")) {
-			var tempvalue = value.replace("/tabs ", "");
-			var query = "";
-			if (tempvalue != "/history") {
-				query = value.replace("/history ", "");
-			}
-			chrome.runtime.sendMessage({request:"search-history", query:query}, function(response){
-				populateOmniHistory(response.history);
-			});
-		} else {
-			populateOmni();
-			$("#omni-extension #omni-list .omni-item").filter(function(){
-				if (value.startsWith("/tabs")) {
-					var tempvalue = value.replace("/tabs ", "");
-					if (tempvalue == "/tabs") {
-						$(this).toggle($(this).attr("data-type") == "tab");
-					} else {
-						tempvalue = value.replace("/tabs ", "");
-						$(this).toggle(($(this).find(".omni-item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".omni-item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && $(this).attr("data-type") == "tab");
-					}
-				} else if (value.startsWith("/bookmarks")) {
-					var tempvalue = value.replace("/bookmarks ", "");
-					if (tempvalue == "/bookmarks") {
-						$(this).toggle($(this).attr("data-type") == "bookmark");
-					} else {
-						tempvalue = value.replace("/bookmarks ", "");
-						$(this).toggle(($(this).find(".omni-item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".omni-item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && $(this).attr("data-type") == "bookmark");
-					}
-				} else if (value.startsWith("/remove")) {
-					var tempvalue = value.replace("/remove ", "");
-					if (tempvalue == "/remove") {
-						$(this).toggle($(this).attr("data-type") == "bookmark" || $(this).attr("data-type") == "tab");
-					} else {
-						tempvalue = value.replace("/remove ", "");
-						$(this).toggle(($(this).find(".omni-item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".omni-item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && ($(this).attr("data-type") == "bookmark" || $(this).attr("data-type") == "tab"));
-					}
-				} else if (value.startsWith("/actions")) {
-					var tempvalue = value.replace("/actions ", "");
-					if (tempvalue == "/actions") {
-						$(this).toggle($(this).attr("data-type") == "action");
-					} else {
-						tempvalue = value.replace("/actions ", "");
-						$(this).toggle(($(this).find(".omni-item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".omni-item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && $(this).attr("data-type") == "action");
-					}
-				} else {
-					$(this).toggle($(this).find(".omni-item-name").text().toLowerCase().indexOf(value) > -1 || $(this).find(".omni-item-desc").text().toLowerCase().indexOf(value) > -1);
-				}
-			});
-		}
-		$(".omni-extension #omni-results").html($("#omni-extension #omni-list .omni-item:visible").length+" results");
+    if (value.startsWith("/history")) {
+      var tempvalue = value.replace("/tabs ", "");
+      var query = "";
+      if (tempvalue != "/history") {
+        query = value.replace("/history ", "");
+      }
+      chrome.runtime.sendMessage(
+        { request: "search-history", query: query },
+        function (response) {
+          populateOmniHistory(response.history);
+        }
+      );
+    } else {
+      populateOmni();
+      $("#omni-extension #omni-list .omni-item").filter(function () {
+        if (value.startsWith("/tabs")) {
+          var tempvalue = value.replace("/tabs ", "");
+          if (tempvalue == "/tabs") {
+            $(this).toggle($(this).attr("data-type") == "tab");
+          } else {
+            tempvalue = value.replace("/tabs ", "");
+            $(this).toggle(
+              ($(this)
+                .find(".omni-item-name")
+                .text()
+                .toLowerCase()
+                .indexOf(tempvalue) > -1 ||
+                $(this)
+                  .find(".omni-item-desc")
+                  .text()
+                  .toLowerCase()
+                  .indexOf(tempvalue) > -1) &&
+                $(this).attr("data-type") == "tab"
+            );
+          }
+        } else if (value.startsWith("/bookmarks")) {
+          var tempvalue = value.replace("/bookmarks ", "");
+          if (tempvalue == "/bookmarks") {
+            $(this).toggle($(this).attr("data-type") == "bookmark");
+          } else {
+            tempvalue = value.replace("/bookmarks ", "");
+            $(this).toggle(
+              ($(this)
+                .find(".omni-item-name")
+                .text()
+                .toLowerCase()
+                .indexOf(tempvalue) > -1 ||
+                $(this)
+                  .find(".omni-item-desc")
+                  .text()
+                  .toLowerCase()
+                  .indexOf(tempvalue) > -1) &&
+                $(this).attr("data-type") == "bookmark"
+            );
+          }
+        } else if (value.startsWith("/remove")) {
+          var tempvalue = value.replace("/remove ", "");
+          if (tempvalue == "/remove") {
+            $(this).toggle(
+              $(this).attr("data-type") == "bookmark" ||
+                $(this).attr("data-type") == "tab"
+            );
+          } else {
+            tempvalue = value.replace("/remove ", "");
+            $(this).toggle(
+              ($(this)
+                .find(".omni-item-name")
+                .text()
+                .toLowerCase()
+                .indexOf(tempvalue) > -1 ||
+                $(this)
+                  .find(".omni-item-desc")
+                  .text()
+                  .toLowerCase()
+                  .indexOf(tempvalue) > -1) &&
+                ($(this).attr("data-type") == "bookmark" ||
+                  $(this).attr("data-type") == "tab")
+            );
+          }
+        } else if (value.startsWith("/actions")) {
+          var tempvalue = value.replace("/actions ", "");
+          if (tempvalue == "/actions") {
+            $(this).toggle($(this).attr("data-type") == "action");
+          } else {
+            tempvalue = value.replace("/actions ", "");
+            $(this).toggle(
+              ($(this)
+                .find(".omni-item-name")
+                .text()
+                .toLowerCase()
+                .indexOf(tempvalue) > -1 ||
+                $(this)
+                  .find(".omni-item-desc")
+                  .text()
+                  .toLowerCase()
+                  .indexOf(tempvalue) > -1) &&
+                $(this).attr("data-type") == "action"
+            );
+          }
+        } else {
+          $(this).toggle(
+            $(this)
+              .find(".omni-item-name")
+              .text()
+              .toLowerCase()
+              .indexOf(value) > -1 ||
+              $(this)
+                .find(".omni-item-desc")
+                .text()
+                .toLowerCase()
+                .indexOf(value) > -1
+          );
+        }
+      });
+    }
+    $(".omni-extension #omni-results").html(
+      $("#omni-extension #omni-list .omni-item:visible").length + " results"
+    );
   }
 
-	// Handle actions from the omni
-	function handleAction() {
-		var action = actions.find(x => x.title == $(".omni-item-active .omni-item-name").text());
-		closeOmni();
-		if ($(".omni-extension input").val().toLowerCase().startsWith("/remove")) {
-			chrome.runtime.sendMessage({request:"remove", type:action.type, action:action});
-		} else if ($(".omni-extension input").val().toLowerCase().startsWith("/history")) {
-			window.open($(".item-active").attr("data-url"), "_self");
-		} else {
-			chrome.runtime.sendMessage({request:action.action, tab:action});
-			if (action.action == "bookmark") {
-				window.open(action.url, "_self");
-			} else if (action.action == "scroll-bottom") {
-				window.scrollTo(0,document.body.scrollHeight);
-			} else if (action.action == "scroll-top") {
-				window.scrollTo(0,0);
-			} else if (action.action == "close-tab") {
-				window.close();
-			} else if (action.action == "navigation") {
-				window.open(action.url, "_self");
-			} else if (action.action == "fullscreen") {
-				var elem = document.documentElement;
-				elem.requestFullscreen();
-			} else if (action.action == "new-tab") {
-				window.open("");
-			} else if (action.action == "email") {
-				window.open("mailto:");
-			} else if (action.action == "url") {
-				window.open(action.url, "_self");
-			}
-		}
+  // Handle actions from the omni
+  function handleAction() {
+    var action = actions.find(
+      (x) => x.title == $(".omni-item-active .omni-item-name").text()
+    );
+    closeOmni();
+    if ($(".omni-extension input").val().toLowerCase().startsWith("/remove")) {
+      chrome.runtime.sendMessage({
+        request: "remove",
+        type: action.type,
+        action: action,
+      });
+    } else if (
+      $(".omni-extension input").val().toLowerCase().startsWith("/history")
+    ) {
+      window.open($(".item-active").attr("data-url"), "_self");
+    } else {
+      chrome.runtime.sendMessage({ request: action.action, tab: action });
+      if (action.action == "bookmark") {
+        window.open(action.url, "_self");
+      } else if (action.action == "scroll-bottom") {
+        window.scrollTo(0, document.body.scrollHeight);
+      } else if (action.action == "scroll-top") {
+        window.scrollTo(0, 0);
+      } else if (action.action == "close-tab") {
+        window.close();
+      } else if (action.action == "navigation") {
+        window.open(action.url, "_self");
+      } else if (action.action == "fullscreen") {
+        var elem = document.documentElement;
+        elem.requestFullscreen();
+      } else if (action.action == "new-tab") {
+        window.open("");
+      } else if (action.action == "email") {
+        window.open("mailto:");
+      } else if (action.action == "url") {
+        window.open(action.url, "_self");
+      }
+    }
 
-		// Fetch actions again
-		chrome.runtime.sendMessage({request:"get-actions"}, function(response) {
-			actions = response.actions;
-			populateOmni();
-		});
-	}
+    // Fetch actions again
+    chrome.runtime.sendMessage({ request: "get-actions" }, function (response) {
+      actions = response.actions;
+      populateOmni();
+    });
+  }
 
-	// Customize the shortcut to open the Omni box
-	function openShortcuts() {
-		chrome.runtime.sendMessage({request:"extensions/shortcuts"});
-	}
+  // Customize the shortcut to open the Omni box
+  function openShortcuts() {
+    chrome.runtime.sendMessage({ request: "extensions/shortcuts" });
+  }
 
-
-	// Check which keys are down
-	var down = [];
-	$(document).keydown(function(e) {
-			down[e.keyCode] = true;
-	}).keyup(function(e) {
-		if (down[18] && down[16] && down[80]) {
-			if (actions.find(x => x.action == "pin") != undefined) {
-				chrome.runtime.sendMessage({request:"pin-tab"});
-			} else {
-				chrome.runtime.sendMessage({request:"unpin-tab"});
-			}
-			chrome.runtime.sendMessage({request:"get-actions"}, function(response) {
-				actions = response.actions;
-				populateOmni();
-			});
-		} else if (down[18] && down[16] && down[77]) {
-			if (actions.find(x => x.action == "mute") != undefined) {
-				chrome.runtime.sendMessage({request:"mute-tab"});
-			} else {
-				chrome.runtime.sendMessage({request:"unmute-tab"});
-			}
-			chrome.runtime.sendMessage({request:"get-actions"}, function(response) {
-				actions = response.actions;
-				populateOmni();
-			});
-		} else if (down[18] && down[16] && down[67]) {
-			window.open("mailto:");
-		}
-
-		if (down[38]) {
-      // Up key
-      if ($(".omni-item-active").prevAll("div").not(":hidden").first().length) {
-        var previous = $(".omni-item-active").prevAll("div").not(":hidden").first();
-        $(".omni-item-active").removeClass("item-active");
-        previous.addClass("omni-item-active");
-        previous[0].scrollIntoView({block:"nearest", inline:"nearest"});
+  // Check which keys are down
+  var down = [];
+  $(document)
+    .keydown(function (e) {
+      down[e.keyCode] = true;
+    })
+    .keyup(function (e) {
+      if (down[18] && down[16] && down[80]) {
+        if (actions.find((x) => x.action == "pin") != undefined) {
+          chrome.runtime.sendMessage({ request: "pin-tab" });
+        } else {
+          chrome.runtime.sendMessage({ request: "unpin-tab" });
+        }
+        chrome.runtime.sendMessage(
+          { request: "get-actions" },
+          function (response) {
+            actions = response.actions;
+            populateOmni();
+          }
+        );
+      } else if (down[18] && down[16] && down[77]) {
+        if (actions.find((x) => x.action == "mute") != undefined) {
+          chrome.runtime.sendMessage({ request: "mute-tab" });
+        } else {
+          chrome.runtime.sendMessage({ request: "unmute-tab" });
+        }
+        chrome.runtime.sendMessage(
+          { request: "get-actions" },
+          function (response) {
+            actions = response.actions;
+            populateOmni();
+          }
+        );
+      } else if (down[18] && down[16] && down[67]) {
+        window.open("mailto:");
       }
 
-    } else if (down[40]) {
-      // Down key
-      if ($(".omni-item-active").nextAll("div").not(":hidden").first().length) {
-        var next = $(".omni-item-active").nextAll("div").not(":hidden").first();
-        $(".omni-item-active").removeClass("omni-item-active");
-        next.addClass("omni-item-active");
-        next[0].scrollIntoView({block:"nearest", inline:"nearest"});
+      if (down[38]) {
+        // Up key
+        if (
+          $(".omni-item-active").prevAll("div").not(":hidden").first().length
+        ) {
+          var previous = $(".omni-item-active")
+            .prevAll("div")
+            .not(":hidden")
+            .first();
+          $(".omni-item-active").removeClass("item-active");
+          previous.addClass("omni-item-active");
+          previous[0].scrollIntoView({ block: "nearest", inline: "nearest" });
+        }
+      } else if (down[40]) {
+        // Down key
+        if (
+          $(".omni-item-active").nextAll("div").not(":hidden").first().length
+        ) {
+          var next = $(".omni-item-active")
+            .nextAll("div")
+            .not(":hidden")
+            .first();
+          $(".omni-item-active").removeClass("omni-item-active");
+          next.addClass("omni-item-active");
+          next[0].scrollIntoView({ block: "nearest", inline: "nearest" });
+        }
+      } else if (down[27] && isOpen) {
+        // Esc key
+        closeOmni();
+      } else if (down[13] && isOpen) {
+        // Enter key
+        handleAction();
       }
-    } else if (down[27] && isOpen) {
-      // Esc key
-      closeOmni();
-    } else if (down[13] && isOpen) {
-			// Enter key
-			handleAction();
-		}
 
-		down = [];
-	});
-	
-	// Recieve messages from background
-	chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-		if (message.request == "open-omni") {
-			if (isOpen) {
-				closeOmni();
-			} else {
-				openOmni();
-			}
-		}
-	});
+      down = [];
+    });
 
+  // Recieve messages from background
+  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.request == "open-omni") {
+      if (isOpen) {
+        closeOmni();
+      } else {
+        openOmni();
+      }
+    }
+  });
 
   // Events
-	$(document).on("click", "#open-page-omni-extension-thing", openShortcuts);
-  $(document).on("mouseover", ".omni-extension .omni-item:not(.omni-item-active)", hoverItem);
+  $(document).on("click", "#open-page-omni-extension-thing", openShortcuts);
+  $(document).on(
+    "mouseover",
+    ".omni-extension .omni-item:not(.omni-item-active)",
+    hoverItem
+  );
   $(document).on("input", ".omni-extension input", search);
-	$(document).on("click", ".omni-item-active", handleAction);
-	$(document).on("click", ".omni-extension #omni-overlay", closeOmni);
+  $(document).on("click", ".omni-item-active", handleAction);
+  $(document).on("click", ".omni-extension #omni-overlay", closeOmni);
 });

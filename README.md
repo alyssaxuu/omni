@@ -1,4 +1,5 @@
 # Omni
+
 ![Preview](preview.gif)
 <br>
 <br>
@@ -11,30 +12,34 @@ With Omni you can use Chrome like a pro. Manage tabs, bookmarks, your browser hi
 Made by [Alyssa X](https://alyssax.com)
 
 ## Table of contents
+
 - [Features](#features)
 - [Controlling the interface](#controlling-the-interface)
-	- [Opening Omni](#opening-omni)
-	- [Closing Omni](#closing-omni)
-	- [Switching between dark and light mode](#switching-between-dark-and-light-mode)
+  - [Opening Omni](#opening-omni)
+  - [Closing Omni](#closing-omni)
+  - [Switching between dark and light mode](#switching-between-dark-and-light-mode)
 - [List of commands](#list-of-commands)
 - [Libraries used](#libraries-used)
 
 ## Features
+
 🗄 Switch, open, close, and search your tabs<br> 📚 Browse and manage your bookmarks<br> 🔍 Search your browsing history<br> ⚡️ 50+ actions to improve your productivity<br> 🔮 Special commands to filter and perform more actions<br> 🧩 Integrations with Notion, Figma, Docs, Asana...<br> ⌨️ Shortcuts for actions such as muting, pinning, bookmarking...<br> ⚙️ Advanced settings to help troubleshoot browsing issues<br> 🌙 Dark mode<br> ...and much more - all for free & no sign in needed!
 
 ## Controlling the interface
 
 ### Opening Omni
 
-To open Omni, simply press `⌘+K` on Mac or `Ctrl+K` on Windows. You can change the shortcut by going to chrome://extensions/shortcuts. 
+To open Omni, simply press `⌘+K` on Mac or `Ctrl+K` on Windows. You can change the shortcut by going to chrome://extensions/shortcuts.
 
 Alternatively you can click on the extension icon in the toolbar to toggle it.
 
 ### Closing Omni
+
 To close Omni you can press `Esc`, click on the background, or press the extension icon.
 
 ### Switching between dark and light mode
-The dark and light theme in Omni is tied to your system's theme. 
+
+The dark and light theme in Omni is tied to your system's theme.
 
 On Mac you can change the theme by clicking on the Apple menu (on the top left), opening the System preferences, going into the General section, and then choosing between dark, light, or auto.
 
@@ -43,6 +48,7 @@ On Windows it depends on the OS version. [Here is a guide for Windows 11 and 10.
 After switching the theme you might need to restart Chrome.
 
 ## List of commands
+
 You can use a variety of commands with Omni to perform actions or filter your results.
 
 - **/tabs**: Search your tabs
@@ -53,6 +59,8 @@ You can use a variety of commands with Omni to perform actions or filter your re
 
 ## Libraries used
 
-- [jQuery](https://jquery.com/) -  for better event handling and DOM manipulation
+- [jQuery](https://jquery.com/) - for better event handling and DOM manipulation
+
 #
- Feel free to reach out to me through email at hi@alyssax.com or [on Twitter](https://twitter.com/alyssaxuu) if you have any questions or feedback! Hope you find this useful 💜
+
+Feel free to reach out to me through email at hi@alyssax.com or [on Twitter](https://twitter.com/alyssaxuu) if you have any questions or feedback! Hope you find this useful 💜
