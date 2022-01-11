@@ -244,7 +244,7 @@ $(document).ready(function(){
 			handleAction();
 		}
 
-		down[e.keyCode] = false;
+		down = [];
 	});
 	
 	// Recieve messages from background
