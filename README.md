@@ -15,7 +15,7 @@ Made by [Alyssa X](https://alyssax.com)
 - [Controlling the interface](#controlling-the-interface)
 	- [Opening Omni](#opening-omni)
 	- [Closing Omni](#closing-omni)
-	- [Switching between light and dark mode](#switching-between-light-and-dark-mode)
+	- [Switching between dark and light mode](#switching-between-dark-and-light-mode)
 - [List of commands](#list-of-commands)
 - [Libraries used](#libraries-used)
 
