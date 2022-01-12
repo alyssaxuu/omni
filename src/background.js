@@ -1,33 +1,5 @@
 var actions = [];
 
-// Inject Omni on install
-chrome.manifest = chrome.runtime.getManifest();
-var injectIntoTab = function (tab) {
-    var scripts = chrome.manifest.content_scripts[0].js;
-    var i = 0, s = scripts.length;
-    for( ; i < s; i++ ) {
-        chrome.scripting.executeScript({
-						target: {tabId: tab.id},
-            files: [scripts[i]]
-        });
-    }
-}
-
-// Get all windows
-chrome.windows.getAll({
-    populate: true
-}, function (windows) {
-    var i = 0, w = windows.length, currentWindow;
-    for( ; i < w; i++ ) {
-        currentWindow = windows[i];
-        var j = 0, t = currentWindow.tabs.length, currentTab;
-        for( ; j < t; j++ ) {
-            currentTab = currentWindow.tabs[j];
-            injectIntoTab(currentTab);
-        }
-    }
-});
-
 // Clear actions and append default ones
 function clearActions() {
 	getCurrentTab().then((response) => {
@@ -134,6 +106,34 @@ function clearActions() {
 
 // Open on install
 chrome.runtime.onInstalled.addListener(function (object) {
+	// Inject Omni on install
+	chrome.manifest = chrome.runtime.getManifest();
+	var injectIntoTab = function (tab) {
+			var scripts = chrome.manifest.content_scripts[0].js;
+			var i = 0, s = scripts.length;
+			for( ; i < s; i++ ) {
+					chrome.scripting.executeScript({
+							target: {tabId: tab.id},
+							files: [scripts[i]]
+					});
+			}
+	}
+
+	// Get all windows
+	chrome.windows.getAll({
+			populate: true
+	}, function (windows) {
+			var i = 0, w = windows.length, currentWindow;
+			for( ; i < w; i++ ) {
+					currentWindow = windows[i];
+					var j = 0, t = currentWindow.tabs.length, currentTab;
+					for( ; j < t; j++ ) {
+							currentTab = currentWindow.tabs[j];
+							injectIntoTab(currentTab);
+					}
+			}
+	});
+
 	chrome.tabs.create({url: "https://alyssax.com/omni/"});
 });
 
