@@ -117,7 +117,7 @@ chrome.runtime.onInstalled.addListener(function (object) {
 							files: [scripts[i]]
 					});
 			}
-			chrome.scripting.executeScript({
+			chrome.scripting.insertCSS({
 					target: {tabId: tab.id},
 					files: [chrome.manifest.content_scripts[0].css[1]]
 			});
