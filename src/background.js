@@ -117,6 +117,10 @@ chrome.runtime.onInstalled.addListener(function (object) {
 							files: [scripts[i]]
 					});
 			}
+			chrome.scripting.executeScript({
+					target: {tabId: tab.id},
+					files: [chrome.manifest.content_scripts[0].css[1]]
+			});
 	}
 
 	// Get all windows
