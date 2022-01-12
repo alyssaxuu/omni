@@ -15,7 +15,7 @@ $(document).ready(function(){
 
 	// Add actions to the omni
 	function populateOmni() {
-		$("#omni-extension #list").html("");
+		$("#omni-extension #omni-list").html("");
 		actions.forEach(function(action, index){
 			var keys = "";
 			if (action.keycheck) {
@@ -152,7 +152,7 @@ $(document).ready(function(){
 		if ($(".omni-extension input").val().toLowerCase().startsWith("/remove")) {
 			chrome.runtime.sendMessage({request:"remove", type:action.type, action:action});
 		} else if ($(".omni-extension input").val().toLowerCase().startsWith("/history")) {
-			window.open($(".item-active").attr("data-url"), "_self");
+			window.open($(".omni-item-active").attr("data-url"), "_self");
 		} else {
 			chrome.runtime.sendMessage({request:action.action, tab:action});
 			if (action.action == "bookmark") {
