@@ -148,7 +148,6 @@ $(document).ready(function(){
 	// Handle actions from the omni
 	function handleAction() {
 		var action = actions.find(x => x.title == $(".omni-item-active .omni-item-name").text());
-		console.log(action);
 		closeOmni();
 		if ($(".omni-extension input").val().toLowerCase().startsWith("/remove")) {
 			chrome.runtime.sendMessage({request:"remove", type:action.type, action:action});
