@@ -223,7 +223,7 @@ $(document).ready(function(){
       // Up key
       if ($(".omni-item-active").prevAll("div").not(":hidden").first().length) {
         var previous = $(".omni-item-active").prevAll("div").not(":hidden").first();
-        $(".omni-item-active").removeClass("item-active");
+        $(".omni-item-active").removeClass("omni-item-active");
         previous.addClass("omni-item-active");
         previous[0].scrollIntoView({block:"nearest", inline:"nearest"});
       }
