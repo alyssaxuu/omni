@@ -198,7 +198,7 @@ function getBookmarks() {
 		for (var i = 0; i < bookmarks.length; i++) {
 			var bookmark = bookmarks[i];
 			if (bookmark.url) {
-					actions.push({title:bookmark.title, desc:"Bookmark", id:bookmark.id, type:"bookmark", action:"bookmark", emoji:true, emojiChar:"⭐️", keycheck:false})
+					actions.push({title:bookmark.title, desc:"Bookmark", id:bookmark.id, url:bookmark.url, type:"bookmark", action:"bookmark", emoji:true, emojiChar:"⭐️", keycheck:false})
 			}
 			if (bookmark.children) {
 					process_bookmark(bookmark.children);

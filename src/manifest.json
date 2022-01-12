@@ -2,7 +2,7 @@
   "name": "Omni",
   "description": "Supercharge Chrome with commands, shortcuts, and more",
   "offline_enabled": true,
-  "version": "1.0.7",
+  "version": "1.0.8",
   "manifest_version": 3,
   "action": {
 		"icons": { 
