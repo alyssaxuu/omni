@@ -162,6 +162,9 @@
   margin-top: 5px;
   margin-bottom: 5px;
   box-sizing: border-box;
+	outline: none;
+	border: 0px;
+	box-shadow: none;
 }
 .omni-extension ::placeholder {
   color: var(--placeholder);
