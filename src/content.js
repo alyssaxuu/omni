@@ -143,6 +143,8 @@ $(document).ready(function(){
 			});
 		}
 		$(".omni-extension #omni-results").html($("#omni-extension #omni-list .omni-item:visible").length+" results");
+		$(".omni-item-active").removeClass("omni-item-active");
+		$(".omni-extension #omni-list .omni-item:visible").first().addClass("omni-item-active");
   }
 
 	// Handle actions from the omni
