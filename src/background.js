@@ -92,7 +92,7 @@ function clearActions() {
 				} else if (action.action == "scroll-bottom") {
 					action.keys = ['End'];
 				}
-				actions.keys.forEach(function(key){
+				action.keys.forEach(function(key){
 					if (key == "⌘") {
 						key = "Ctrl";
 					} else if (key == "⌥") {
