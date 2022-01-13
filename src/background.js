@@ -81,7 +81,7 @@ function clearActions() {
 					action.keys = ['Ctrl', 'J'];
 				} else if (action.action == "settings") {
 					action.keycheck = false;
-				} else if (action.action = "history") {
+				} else if (action.action == "history") {
 					action.keys = ['Ctrl', 'H'];
 				} else if (action.action == "go-back") {
 					action.keys = ['Alt','←'];
