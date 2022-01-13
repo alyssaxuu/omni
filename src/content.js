@@ -195,8 +195,26 @@ $(document).ready(function(){
 
 	// Check which keys are down
 	var down = [];
+
 	$(document).keydown(function(e) {
 			down[e.keyCode] = true;
+			if (down[38]) {
+				// Up key
+				if ($(".omni-item-active").prevAll("div").not(":hidden").first().length) {
+					var previous = $(".omni-item-active").prevAll("div").not(":hidden").first();
+					$(".omni-item-active").removeClass("omni-item-active");
+					previous.addClass("omni-item-active");
+					previous[0].scrollIntoView({block:"nearest", inline:"nearest"});
+				}
+			} else if (down[40]) {
+				// Down key
+				if ($(".omni-item-active").nextAll("div").not(":hidden").first().length) {
+					var next = $(".omni-item-active").nextAll("div").not(":hidden").first();
+					$(".omni-item-active").removeClass("omni-item-active");
+					next.addClass("omni-item-active");
+					next[0].scrollIntoView({block:"nearest", inline:"nearest"});
+				}
+			}
 	}).keyup(function(e) {
 		if (down[18] && down[16] && down[80]) {
 			if (actions.find(x => x.action == "pin") != undefined) {
@@ -221,25 +239,8 @@ $(document).ready(function(){
 		} else if (down[18] && down[16] && down[67]) {
 			window.open("mailto:");
 		}
-
-		if (down[38]) {
-      // Up key
-      if ($(".omni-item-active").prevAll("div").not(":hidden").first().length) {
-        var previous = $(".omni-item-active").prevAll("div").not(":hidden").first();
-        $(".omni-item-active").removeClass("omni-item-active");
-        previous.addClass("omni-item-active");
-        previous[0].scrollIntoView({block:"nearest", inline:"nearest"});
-      }
-
-    } else if (down[40]) {
-      // Down key
-      if ($(".omni-item-active").nextAll("div").not(":hidden").first().length) {
-        var next = $(".omni-item-active").nextAll("div").not(":hidden").first();
-        $(".omni-item-active").removeClass("omni-item-active");
-        next.addClass("omni-item-active");
-        next[0].scrollIntoView({block:"nearest", inline:"nearest"});
-      }
-    } else if (down[27] && isOpen) {
+		
+		if (down[27] && isOpen) {
       // Esc key
       closeOmni();
     } else if (down[13] && isOpen) {
