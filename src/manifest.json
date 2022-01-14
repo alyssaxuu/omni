@@ -34,8 +34,8 @@
 				"<all_urls>"
 			],
 			"run_at": "document_end",
-			"js": ["jquery.js", "assets/jquery.nice-select.min.js", "content.js"],
-			"css": ["assets/nice-select.css", "content.css"]
+			"js": ["jquery.js", "content.js"],
+			"css": ["content.css"]
 		}
   ],
   "web_accessible_resources": [

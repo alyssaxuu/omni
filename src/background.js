@@ -129,7 +129,7 @@ chrome.runtime.onInstalled.addListener(function (object) {
 			}
 			chrome.scripting.insertCSS({
 					target: {tabId: tab.id},
-					files: [chrome.manifest.content_scripts[0].css[1]]
+					files: [chrome.manifest.content_scripts[0].css[0]]
 			});
 	}
 
