@@ -73,24 +73,34 @@ function clearActions() {
 		];
 		if (!isMac) {
 			actions.forEach(function(action){
-				if (action.action == "reload") {
-					action.keys = ['F5'];
-				} else if (action.action == "fullscreen") {
-					action.keys = ['F11'];
-				} else if (action.action == "downloads") {
-					action.keys = ['Ctrl', 'J'];
-				} else if (action.action == "settings") {
-					action.keycheck = false;
-				} else if (action.action == "history") {
-					action.keys = ['Ctrl', 'H'];
-				} else if (action.action == "go-back") {
-					action.keys = ['Alt','←'];
-				} else if (action.action == "go-forward") {
-					action.keys = ['Alt','→']
-				} else if (action.action == "scroll-top") {
-					action.keys = ['Home'];
-				} else if (action.action == "scroll-bottom") {
-					action.keys = ['End'];
+				switch (action.action) {
+					case "reload":
+						action.keys = ['F5'];
+						break;
+					case "fullscreen":
+						action.keys = ['F11'];
+						break;
+					case "downloads":
+						action.keys = ['Ctrl', 'J'];
+						break;
+					case "settings":
+						action.keycheck = false;
+						break;
+					case "history":
+						action.keys = ['Ctrl', 'H'];
+						break;
+					case "go-back":
+						action.keys = ['Alt','←'];
+						break;
+					case "go-forward":
+						action.keys = ['Alt','→']
+						break;
+					case "scroll-top":
+						action.keys = ['Home'];
+						break;
+					case "scroll-bottom":
+						action.keys = ['End'];
+						break;
 				}
 				action.keys.forEach(function(key){
 					if (key == "⌘") {
@@ -300,72 +310,98 @@ function removeBookmark(bookmark) {
 	chrome.bookmarks.remove(bookmark.id);
 }
 
-// Recieve messages from any tab
+// Receive messages from any tab
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.request == "get-actions") {
-		clearActions();
-		getTabs();
-		getBookmarks();
-    sendResponse({actions:actions});
-  } else if (message.request == "switch-tab") {
-		switchTab(message.tab);
-	} else if (message.request == "go-back") {
-		goBack(message.tab);
-	} else if (message.request == "go-forward") {
-		goForward(message.tab);
-	} else if (message.request == "duplicate-tab") {
-		duplicateTab(message.tab);
-	} else if (message.request == "create-bookmark") {
-		createBookmark(message.tab);
-	} else if (message.request == "mute") {
-		muteTab(true);
-	} else if (message.request == "unmute") {
-		muteTab(false);
-	} else if (message.request == "reload") {
-		reloadTab();
-	} else if (message.request == "pin") {
-		pinTab(true);
-	} else if (message.request == "unpin") {
-		pinTab(false);
-	} else if (message.request == "remove-all") {
-		clearAllData();
-	} else if (message.request == "remove-history") {
-		clearBrowsingData();
-	} else if (message.request == "remove-cookies") {
-		clearCookies();
-	} else if (message.request == "remove-cache") {
-		clearCache();
-	} else if (message.request == "remove-local-storage") {
-		clearLocalStorage();
-	} else if (message.request == "remove-passwords") {
-		clearPasswords();
-	} else if (message.request == "history" || message.request == "downloads" || message.request == "extensions" || message.request == "settings" || message.request == "extensions/shortcuts") {
-		openChromeUrl(message.request);
-	} else if (message.request == "manage-data") {
-		openChromeUrl("settings/clearBrowserData");
-	} else if (message.request == "incognito") {
-		openIncognito();
-	} else if (message.request == "close-window") {
-		closeWindow(sender.tab.windowId);
-	} else if (message.request == "search-history") {
-		chrome.history.search({text:message.query, maxResults:1000, startTime:31536000000*5}).then(function(data){
-			data.forEach(function(action){
-				action.type = "history";
-				action.emoji = true;
-				action.emojiChar = "🏛";
-				action.action = "history";
-				action.desc = "Browsing history";
-			});
-			sendResponse({history:data});
-		})
-		return true;
-	} else if (message.request == "remove") {
-		if (message.type == "bookmark") {
-			removeBookmark(message.action);
-		} else {
-			closeTab(message.action);
+	switch (message.request) {
+		case "get-actions":
+			clearActions();
+			getTabs();
+			getBookmarks();
+			sendResponse({actions: actions});
+			break;
+		case "switch-tab":
+			switchTab(message.tab);
+			break;
+		case "go-back":
+			goBack(message.tab);
+			break;
+		case "go-forward": 
+			goForward(message.tab);
+			break;
+		case "duplicate-tab":
+			duplicateTab(message.tab);
+			break;
+		case "create-bookmark":
+			createBookmark(message.tab);
+			break;
+		case "mute":
+			muteTab(true);
+			break;
+		case "unmute":
+			muteTab(false);
+			break;
+		case "reload":
+			reloadTab();
+			break;
+		case "pin":
+			pinTab(true);
+			break;
+		case "unpin":
+			pinTab(false);
+			break;
+		case "remove-all":
+			clearAllData();
+			break;
+		case "remove-history":
+			clearBrowsingData();
+			break;
+		case "remove-cookies":
+			clearCookies();
+			break;
+		case "remove-cache":
+			clearCache();
+			break;
+		case "remove-local-storage":
+			clearLocalStorage();
+			break;
+		case "remove-passwords":
+			clearPasswords();
+		case "history": // Fallthrough
+		case "downloads":
+		case "extensions":
+		case "settings":
+		case "extensions/shortcuts":
+			openChromeUrl(message.request);
+			break;
+		case "manage-data":
+			openChromeUrl("settings/clearBrowserData");
+			break;
+		case "incognito":
+			openIncognito();
+			break;
+		case "close-window":
+			closeWindow(sender.tab.windowId);
+			break;
+		case "search-history":
+			chrome.history.search({text:message.query, maxResults:1000, startTime:31536000000*5}).then(function(data){
+				data.forEach(function(action){
+					action.type = "history";
+					action.emoji = true;
+					action.emojiChar = "🏛";
+					action.action = "history";
+					action.desc = "Browsing history";
+				});
+				sendResponse({history:data});
+			})
+			return true;
+		case "remove":
+			if (message.type == "bookmark") {
+				removeBookmark(message.action);
+			} else {
+				closeTab(message.action);
+			}
+			break;
 		}
-	}
 });
 
 // Get actions
