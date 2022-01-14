@@ -119,33 +119,33 @@ chrome.runtime.onInstalled.addListener(function (object) {
 	// Inject Omni on install
 	chrome.manifest = chrome.runtime.getManifest();
 	var injectIntoTab = function (tab) {
-			var scripts = chrome.manifest.content_scripts[0].js;
-			var i = 0, s = scripts.length;
-			for( ; i < s; i++ ) {
-					chrome.scripting.executeScript({
-							target: {tabId: tab.id},
-							files: [scripts[i]]
-					});
-			}
-			chrome.scripting.insertCSS({
-					target: {tabId: tab.id},
-					files: [chrome.manifest.content_scripts[0].css[0]]
+		var scripts = chrome.manifest.content_scripts[0].js;
+		var i = 0, s = scripts.length;
+		for( ; i < s; i++ ) {
+			chrome.scripting.executeScript({
+				target: {tabId: tab.id},
+				files: [scripts[i]]
 			});
+		}
+		chrome.scripting.insertCSS({
+			target: {tabId: tab.id},
+			files: [chrome.manifest.content_scripts[0].css[0]]
+		});
 	}
 
 	// Get all windows
 	chrome.windows.getAll({
-			populate: true
+		populate: true
 	}, function (windows) {
-			var i = 0, w = windows.length, currentWindow;
-			for( ; i < w; i++ ) {
-					currentWindow = windows[i];
-					var j = 0, t = currentWindow.tabs.length, currentTab;
-					for( ; j < t; j++ ) {
-							currentTab = currentWindow.tabs[j];
-							injectIntoTab(currentTab);
-					}
+		var i = 0, w = windows.length, currentWindow;
+		for( ; i < w; i++ ) {
+			currentWindow = windows[i];
+			var j = 0, t = currentWindow.tabs.length, currentTab;
+			for( ; j < t; j++ ) {
+				currentTab = currentWindow.tabs[j];
+				injectIntoTab(currentTab);
 			}
+		}
 	});
 
 	chrome.tabs.create({url: "https://alyssax.com/omni/"});
@@ -153,14 +153,14 @@ chrome.runtime.onInstalled.addListener(function (object) {
 
 // Check when the extension button is clicked
 chrome.action.onClicked.addListener((tab) => {
-	chrome.tabs.sendMessage(tab.id, {request: "open-omni"});  
+	chrome.tabs.sendMessage(tab.id, {request: "open-omni"});
 });
 
 // Listen for the open omni shortcut
 chrome.commands.onCommand.addListener((command) => {
 	if (command == "open-omni") {
 		chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-			chrome.tabs.sendMessage(tabs[0].id, {request: "open-omni"});  
+			chrome.tabs.sendMessage(tabs[0].id, {request: "open-omni"});
 		});
 	}
 });
@@ -184,22 +184,22 @@ chrome.tabs.onRemoved.addListener(function(tabId, changeInfo, tab) {
 
 // Get the current tab
 async function getCurrentTab() {
-  let queryOptions = { active: true, currentWindow: true };
-  let [tab] = await chrome.tabs.query(queryOptions);
-  return tab;
+	let queryOptions = { active: true, currentWindow: true };
+	let [tab] = await chrome.tabs.query(queryOptions);
+	return tab;
 }
 
 // Get tabs to populate in the actions
 function getTabs() {
-  chrome.tabs.query({}, function(tabs) {
+	chrome.tabs.query({}, function(tabs) {
 		tabs.forEach(function(tab){
-      tab.desc = "Chrome tab";
-      tab.keycheck = false;
+			tab.desc = "Chrome tab";
+			tab.keycheck = false;
 			tab.action = "switch-tab";
 			tab.type = "tab";
-    })
+		})
 		actions = tabs.concat(actions);
-  });
+	});
 }
 
 // Get bookmarks to populate in the actions
@@ -326,7 +326,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 		case "go-back":
 			goBack(message.tab);
 			break;
-		case "go-forward": 
+		case "go-forward":
 			goForward(message.tab);
 			break;
 		case "duplicate-tab":
