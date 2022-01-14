@@ -1,6 +1,7 @@
 $(document).ready(function(){
 	var isOpen = false;
   var actions = [];
+	var isFiltered = false;
 
 	// Append the omni into the current page
   $.get(chrome.runtime.getURL('/content.html'), function(data) {
@@ -39,8 +40,9 @@ $(document).ready(function(){
 		$(".omni-extension #omni-results").html(actions.length+" results");
 	}
 
-	// Add actions to the omni
-	function populateOmniHistory(actions) {
+	// Add filtered actions to the omni
+	function populateOmniFilter(actions) {
+		isFiltered = true;
 		$("#omni-extension #omni-list").html("");
 		actions.forEach(function(action, index){
 			var keys = "";
@@ -101,10 +103,24 @@ $(document).ready(function(){
 				query = value.replace("/history ", "");
 			}
 			chrome.runtime.sendMessage({request:"search-history", query:query}, function(response){
-				populateOmniHistory(response.history);
+				populateOmniFilter(response.history);
+			});
+		} else if (value.startsWith("/bookmarks")) {
+			var tempvalue = value.replace("/bookmarks ", "");
+			var query = "";
+			if (tempvalue != "/bookmarks" || "/bookmarks ") {
+				query = value.replace("/bookmarks ", "");
+			} else {
+				
+			}
+			chrome.runtime.sendMessage({request:"search-bookmarks", query:query}, function(response){
+				populateOmniFilter(response.bookmarks);
 			});
 		} else {
-			populateOmni();
+			if (isFiltered) {
+				populateOmni();
+				isFiltered = false;
+			}
 			$("#omni-extension #omni-list .omni-item").filter(function(){
 				if (value.startsWith("/tabs")) {
 					var tempvalue = value.replace("/tabs ", "");
@@ -113,14 +129,6 @@ $(document).ready(function(){
 					} else {
 						tempvalue = value.replace("/tabs ", "");
 						$(this).toggle(($(this).find(".omni-item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".omni-item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && $(this).attr("data-type") == "tab");
-					}
-				} else if (value.startsWith("/bookmarks")) {
-					var tempvalue = value.replace("/bookmarks ", "");
-					if (tempvalue == "/bookmarks") {
-						$(this).toggle($(this).attr("data-type") == "bookmark");
-					} else {
-						tempvalue = value.replace("/bookmarks ", "");
-						$(this).toggle(($(this).find(".omni-item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".omni-item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && $(this).attr("data-type") == "bookmark");
 					}
 				} else if (value.startsWith("/remove")) {
 					var tempvalue = value.replace("/remove ", "");
@@ -223,24 +231,24 @@ $(document).ready(function(){
 	var down = [];
 
 	$(document).keydown(function(e) {
-			down[e.keyCode] = true;
-			if (down[38]) {
-				// Up key
-				if ($(".omni-item-active").prevAll("div").not(":hidden").first().length) {
-					var previous = $(".omni-item-active").prevAll("div").not(":hidden").first();
-					$(".omni-item-active").removeClass("omni-item-active");
-					previous.addClass("omni-item-active");
-					previous[0].scrollIntoView({block:"nearest", inline:"nearest"});
-				}
-			} else if (down[40]) {
-				// Down key
-				if ($(".omni-item-active").nextAll("div").not(":hidden").first().length) {
-					var next = $(".omni-item-active").nextAll("div").not(":hidden").first();
-					$(".omni-item-active").removeClass("omni-item-active");
-					next.addClass("omni-item-active");
-					next[0].scrollIntoView({block:"nearest", inline:"nearest"});
-				}
+		down[e.keyCode] = true;
+		if (down[38]) {
+			// Up key
+			if ($(".omni-item-active").prevAll("div").not(":hidden").first().length) {
+				var previous = $(".omni-item-active").prevAll("div").not(":hidden").first();
+				$(".omni-item-active").removeClass("omni-item-active");
+				previous.addClass("omni-item-active");
+				previous[0].scrollIntoView({block:"nearest", inline:"nearest"});
 			}
+		} else if (down[40]) {
+			// Down key
+			if ($(".omni-item-active").nextAll("div").not(":hidden").first().length) {
+				var next = $(".omni-item-active").nextAll("div").not(":hidden").first();
+				$(".omni-item-active").removeClass("omni-item-active");
+				next.addClass("omni-item-active");
+				next[0].scrollIntoView({block:"nearest", inline:"nearest"});
+			}
+		}
 	}).keyup(function(e) {
 		if (down[18] && down[16] && down[80]) {
 			if (actions.find(x => x.action == "pin") != undefined) {
