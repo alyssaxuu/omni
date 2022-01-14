@@ -1,0 +1,53 @@
+{
+    "name": "Omni",
+    "description": "Supercharge Chrome with commands, shortcuts, and more",
+    "offline_enabled": true,
+    "version": "1.2.5",
+    "manifest_version": 2,
+    "browser_specific_settings": {
+      "gecko": {
+        "id": "hi@alyssax.com"
+      }
+    },
+    "action": {
+          "icons": { 
+              "16": "assets/logo-16.png",
+              "48": "assets/logo-48.png",
+              "128": "assets/logo-128.png" 
+          }
+    },
+      "icons": { 
+          "16": "assets/logo-16.png",
+          "48": "assets/logo-48.png",
+           "128": "assets/logo-128.png" 
+      },
+      "commands": {
+          "open-omni": {
+            "suggested_key": {
+              "default": "Ctrl+Shift+K"
+        },
+        "description": "Send a 'toggle-feature' event"
+      }
+    },
+    "background": {
+      "scripts": ["background.js"]
+    },
+  
+    "content_scripts": [
+          {
+              "matches": [
+                  "<all_urls>"
+              ],
+              "run_at": "document_end",
+              "js": ["jquery.js", "content.js"],
+              "css": ["content.css"]
+          }
+    ],
+    "web_accessible_resources": [
+      "content.html", "assets/*", "popup.css", "popup.js"
+    ],
+    "permissions": [
+      "tabs", "activeTab", "bookmarks", "browsingData", "history", "scripting"
+    ]
+  }
+  
