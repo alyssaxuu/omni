@@ -30,28 +30,28 @@
 }
 
 @font-face {
- font-family: 'Inter';
- font-style: normal;
- font-weight: 400;
- src: url('chrome-extension://__MSG_@@extension_id__/assets/Inter-Regular.ttf');
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 400;
+	src: url('chrome-extension://__MSG_@@extension_id__/assets/Inter-Regular.ttf');
 }
 @font-face {
- font-family: 'Inter';
- font-style: normal;
- font-weight: 500;
- src: url('chrome-extension://__MSG_@@extension_id__/assets/Inter-Medium.ttf');
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 500;
+	src: url('chrome-extension://__MSG_@@extension_id__/assets/Inter-Medium.ttf');
 }
 @font-face {
- font-family: 'Inter';
- font-style: normal;
- font-weight: 600;
- src: url('chrome-extension://__MSG_@@extension_id__/assets/Inter-SemiBold.ttf');
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 600;
+	src: url('chrome-extension://__MSG_@@extension_id__/assets/Inter-SemiBold.ttf');
 }
 @font-face {
- font-family: 'Inter';
- font-style: normal;
- font-weight: 700;
- src: url('chrome-extension://__MSG_@@extension_id__/assets/Inter-Bold.ttf');
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 700;
+	src: url('chrome-extension://__MSG_@@extension_id__/assets/Inter-Bold.ttf');
 }
 .omni-extension * {
 	display: block;
@@ -60,175 +60,175 @@
 	line-height: normal;
 }
 .omni-extension {
-  font-family: Inter!important;
+	font-family: Inter!important;
 	z-index: 99999999999;
 }
 .omni-extension #omni-wrap {
 	position: fixed;
-  width: 700px;
-  border: 1px solid transparent;
-  border-radius: 5px;
-  margin: auto;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
-  z-index: 9999999999;
-  height: 540px;
-  transition: all .2s cubic-bezier(.05,.03,.35,1);
+	width: 700px;
+	border: 1px solid transparent;
+	border-radius: 5px;
+	margin: auto;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+	z-index: 9999999999;
+	height: 540px;
+	transition: all .2s cubic-bezier(.05,.03,.35,1);
 }
 .omni-extension #omni {
-  position: absolute;
-  width: 100%;
-  background: var(--background);
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  top: 0px;
-  left: 0px;
-  z-index: 9999999998;
-  height: fit-content;
-  transition: all .2s cubic-bezier(.05,.03,.35,1);
+	position: absolute;
+	width: 100%;
+	background: var(--background);
+	border: 1px solid var(--border);
+	border-radius: 5px;
+	top: 0px;
+	left: 0px;
+	z-index: 9999999998;
+	height: fit-content;
+	transition: all .2s cubic-bezier(.05,.03,.35,1);
 	display: block;
 }
 .omni-closing #omni {
-  transform: scale(.9);
-  opacity: 0;
+	transform: scale(.9);
+	opacity: 0;
 	display: none!important;
 }
 .omni-closing {
 	pointer-events: none;
 }
 .omni-extension #omni-overlay {
-  height: 100%;
-  width: 100%;
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  background-color: #000;
-  z-index: 9999;
-  opacity: .6;
-  transition: all .1s cubic-bezier(.05,.03,.35,1);
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	background-color: #000;
+	z-index: 9999;
+	opacity: .6;
+	transition: all .1s cubic-bezier(.05,.03,.35,1);
 }
 .omni-closing #omni-overlay {
-  opacity: 0!important;
+	opacity: 0!important;
 }
 .omni-extension #omni-head {
-  height: 50px;
-  line-height: 50px;
-  width: 95%;
-  margin-left: auto;
-  margin-right: auto;
-  border-bottom: 1px solid var(--border);
+	height: 50px;
+	line-height: 50px;
+	width: 95%;
+	margin-left: auto;
+	margin-right: auto;
+	border-bottom: 1px solid var(--border);
 }
 .omni-extension #omni-name {
-  color: var(--text);
-  font-size: 12px;
-  font-weight: 600;
-  float: left;
+	color: var(--text);
+	font-size: 12px;
+	font-weight: 600;
+	float: left;
 }
 .omni-extension #omni-close {
-  color: var(--text-3);
-  float: right;
-  font-size: 12px;
-  font-weight: 500;
+	color: var(--text-3);
+	float: right;
+	font-size: 12px;
+	font-weight: 500;
 }
 .omni-extension #omni-close span {
-  margin-left: 3px;
+	margin-left: 3px;
 }
 .omni-extension .omni-shortcut {
-  display: inline-block!important;
+	display: inline-block!important;
 	font-size: 13px;
-  border-radius: 5px;
-  background-color: var(--shortcut);
-  color: var(--text);
-  text-align: center;
-  height: 20px;
-  line-height: 20px;
-  min-width: 20px;
-  padding-left: 3px;
-  padding-right: 3px;
+	border-radius: 5px;
+	background-color: var(--shortcut);
+	color: var(--text);
+	text-align: center;
+	height: 20px;
+	line-height: 20px;
+	min-width: 20px;
+	padding-left: 3px;
+	padding-right: 3px;
 }
 .omni-extension input {
-  background: transparent;
-  border: 0px;
-  outline: none;
-  font-size: 20px;
-  font-weight: 400;
-  height: 50px;
-  width: 92%;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-  color: var(--text);
-  caret-color: var(--accent);
+	background: transparent;
+	border: 0px;
+	outline: none;
+	font-size: 20px;
+	font-weight: 400;
+	height: 50px;
+	width: 92%;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+	color: var(--text);
+	caret-color: var(--accent);
 	font-family: Inter!important;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  box-sizing: border-box;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	box-sizing: border-box;
 	outline: none;
 	border: 0px;
 	box-shadow: none;
 }
 .omni-extension ::placeholder {
-  color: var(--placeholder);
-  opacity: 1;
+	color: var(--placeholder);
+	opacity: 1;
 }
 .omni-extension :-ms-input-placeholder {
-  color: var(--placeholder);
+	color: var(--placeholder);
 }
 .omni-extension ::-ms-input-placeholder {
-  color: var(--placeholder);
+	color: var(--placeholder);
 }
 .omni-extension #omni-list {
-  width: 100%;
-  overflow: auto;
-  height: 100%;
-  max-height: 400px;
-  border-top: 1px solid var(--border);
-  position: relative;
+	width: 100%;
+	overflow: auto;
+	height: 100%;
+	max-height: 400px;
+	border-top: 1px solid var(--border);
+	position: relative;
 }
 .omni-extension .omni-item {
-  height: 60px;
-  width: 100%;
+	height: 60px;
+	width: 100%;
 }
 .omni-extension .omni-item:hover {
-  cursor: pointer;
+	cursor: pointer;
 }
 .omni-extension .omni-item-active {
-  background-color: var(--select);
-  position: relative;
+	background-color: var(--select);
+	position: relative;
 }
 .omni-extension .omni-item-active:before {
-  height: 100%;
-  position: absolute;
-  display: block;
-  content: "";
-  width: 2px;
-  background-color: var(--accent);
+	height: 100%;
+	position: absolute;
+	display: block;
+	content: "";
+	width: 2px;
+	background-color: var(--accent);
 }
 .omni-extension .omni-select {
-  float: right;
-  vertical-align: middle;
-  color: var(--text-3);
-  font-size: 12px;
-  font-weight: 500;
-  display: none;
-  margin-top: 20px;
-  margin-right: 5%;
+	float: right;
+	vertical-align: middle;
+	color: var(--text-3);
+	font-size: 12px;
+	font-weight: 500;
+	display: none;
+	margin-top: 20px;
+	margin-right: 5%;
 }
 .omni-extension .omni-select span {
-  margin-left: 3px;
+	margin-left: 3px;
 }
 .omni-extension .omni-item-active .omni-select {
-  display: block!important;
+	display: block!important;
 }
 .omni-extension .omni-icon {
-  width: 20px;
-  height: 20px;
-  margin-left: 5%;
-  display: inline-block;
-  vertical-align: middle;
-  margin-top: -12px;
+	width: 20px;
+	height: 20px;
+	margin-left: 5%;
+	display: inline-block;
+	vertical-align: middle;
+	margin-top: -12px;
 }
 .omni-extension .omni-emoji-action {
 	display: inline-block;
@@ -241,73 +241,73 @@
 	font-size: 18px;
 }
 .omni-extension .omni-item-details {
-  display: inline-block!important;
-  margin-left: 10px;
-  vertical-align: middle;
-  margin-top: 10px;
+	display: inline-block!important;
+	margin-left: 10px;
+	vertical-align: middle;
+	margin-top: 10px;
 }
 .omni-extension .omni-item-name {
-  color: var(--text-2);
-  font-size: 14px;
-  font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 460px;
+	color: var(--text-2);
+	font-size: 14px;
+	font-weight: 500;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 460px;
 }
 .omni-extension .omni-item-active .omni-item-name {
-  color: var(--text)!important;
+	color: var(--text)!important;
 }
 .omni-extension .omni-item-desc {
-  color: var(--text-3);
-  margin-top: 5px;
+	color: var(--text-3);
+	margin-top: 5px;
 	font-size: 14px;
 	white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 460px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 460px;
 }
 .omni-extension #omni-footer {
-  height: 45px;
-  line-height: 45px;
-  border-top: 1px solid var(--border);
-  width: 92%;
-  margin-left: auto;
-  margin-right: auto;
+	height: 45px;
+	line-height: 45px;
+	border-top: 1px solid var(--border);
+	width: 92%;
+	margin-left: auto;
+	margin-right: auto;
 }
 .omni-extension #omni-results {
-  color: var(--text-3);
-  font-size: 12px;
-  font-weight: 500;
-  float: left;
+	color: var(--text-3);
+	font-size: 12px;
+	font-weight: 500;
+	float: left;
 }
 .omni-extension #omni-arrows {
-  color: var(--text-3);
-  font-size: 12px;
-  font-weight: 500;
-  float: right;
+	color: var(--text-3);
+	font-size: 12px;
+	font-weight: 500;
+	float: right;
 }
 .omni-extension #omni-arrows span {
-  margin-left: 3px;
-  margin-right: 3px;
+	margin-left: 3px;
+	margin-right: 3px;
 }
 .omni-extension .omni-keys {
-  float: right;
-  vertical-align: middle;
-  font-weight: 500;
-  margin-top: 20px;
-  margin-right: 5%;
+	float: right;
+	vertical-align: middle;
+	font-weight: 500;
+	margin-top: 20px;
+	margin-right: 5%;
 }
 .omni-extension .omni-item-active .omni-keys {
-  display: none!important;
+	display: none!important;
 }
 .omni-extension .omni-keys span {
-  margin-left: 3px;
+	margin-left: 3px;
 }
 #body-wrap {
-  width: calc(100% - 350px);
-  overflow: auto;
-  position: absolute;
-  top: 0px;
-  left: 0px;
+	width: calc(100% - 350px);
+	overflow: auto;
+	position: absolute;
+	top: 0px;
+	left: 0px;
 }

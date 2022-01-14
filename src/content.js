@@ -1,18 +1,18 @@
 $(document).ready(function(){
 	var isOpen = false;
-  var actions = [];
+	var actions = [];
 	var isFiltered = false;
 
 	// Append the omni into the current page
-  $.get(chrome.runtime.getURL('/content.html'), function(data) {
-    $(data).appendTo('body');
-  });
+	$.get(chrome.runtime.getURL('/content.html'), function(data) {
+		$(data).appendTo('body');
+	});
 
 	// Request actions from the background
-  chrome.runtime.sendMessage({request:"get-actions"}, function(response) {
-    actions = response.actions;
+	chrome.runtime.sendMessage({request:"get-actions"}, function(response) {
+		actions = response.actions;
 		populateOmni();
-  });
+	});
 
 	// Add actions to the omni
 	function populateOmni() {
@@ -67,7 +67,7 @@ $(document).ready(function(){
 	}
 
 	// Open the omni
-  function openOmni() {
+	function openOmni() {
 		chrome.runtime.sendMessage({request:"get-actions"}, function(response) {
 			isOpen = true;
 			actions = response.actions;
@@ -79,19 +79,19 @@ $(document).ready(function(){
 				$("#omni-extension input").focus();
 			}, 100);
 		});
-  }
+	}
 
 	// Close the omni
-  function closeOmni() {
+	function closeOmni() {
 		isOpen = false;
-    $("#omni-extension").addClass("omni-closing");
-  }
+		$("#omni-extension").addClass("omni-closing");
+	}
 
 	// Hover over an action in the omni
-  function hoverItem() {
-    $(".omni-item-active").removeClass("omni-item-active");
-    $(this).addClass("omni-item-active");
-  }
+	function hoverItem() {
+		$(".omni-item-active").removeClass("omni-item-active");
+		$(this).addClass("omni-item-active");
+	}
 
 	// Autocomplete commands. Since they all start with different letters, it can be the default behavior
 	function checkShortHand(e, value) {
@@ -116,11 +116,11 @@ $(document).ready(function(){
 	}
 
 	// Search for an action in the omni
-  function search(e) {
+	function search(e) {
 		if (e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40 || e.keyCode == 13 || e.keyCode == 37) {
 			return;
 		}
-    var value = $(this).val().toLowerCase();
+		var value = $(this).val().toLowerCase();
 		checkShortHand(e, value);
 		value = $(this).val().toLowerCase();
 		if (value.startsWith("/history")) {
@@ -180,7 +180,7 @@ $(document).ready(function(){
 		$(".omni-extension #omni-results").html($("#omni-extension #omni-list .omni-item:visible").length+" results");
 		$(".omni-item-active").removeClass("omni-item-active");
 		$(".omni-extension #omni-list .omni-item:visible").first().addClass("omni-item-active");
-  }
+	}
 
 	// Handle actions from the omni
 	function handleAction(e) {
@@ -299,11 +299,11 @@ $(document).ready(function(){
 		} else if (down[18] && down[16] && down[67]) {
 			window.open("mailto:");
 		}
-		
+
 		if (down[27] && isOpen) {
-      // Esc key
-      closeOmni();
-    } else if (down[13] && isOpen) {
+			// Esc key
+			closeOmni();
+		} else if (down[13] && isOpen) {
 			// Enter key
 			handleAction();
 		}
@@ -323,10 +323,10 @@ $(document).ready(function(){
 	});
 
 
-  // Events
+	// Events
 	$(document).on("click", "#open-page-omni-extension-thing", openShortcuts);
-  $(document).on("mouseover", ".omni-extension .omni-item:not(.omni-item-active)", hoverItem);
-  $(document).on("keyup", ".omni-extension input", search);
+	$(document).on("mouseover", ".omni-extension .omni-item:not(.omni-item-active)", hoverItem);
+	$(document).on("keyup", ".omni-extension input", search);
 	$(document).on("click", ".omni-item-active", handleAction);
 	$(document).on("click", ".omni-extension #omni-overlay", closeOmni);
 });

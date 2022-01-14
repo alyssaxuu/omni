@@ -1,34 +1,34 @@
 {
-  "name": "Omni",
-  "description": "Supercharge Chrome with commands, shortcuts, and more",
-  "offline_enabled": true,
-  "version": "1.2.7",
-  "manifest_version": 3,
-  "action": {
-		"icons": { 
+	"name": "Omni",
+	"description": "Supercharge Chrome with commands, shortcuts, and more",
+	"offline_enabled": true,
+	"version": "1.2.7",
+	"manifest_version": 3,
+	"action": {
+		"icons": {
 			"16": "assets/logo-16.png",
 			"48": "assets/logo-48.png",
-			"128": "assets/logo-128.png" 
+			"128": "assets/logo-128.png"
 		}
-  },
-	"icons": { 
+	},
+	"icons": {
 		"16": "assets/logo-16.png",
 		"48": "assets/logo-48.png",
-	 	"128": "assets/logo-128.png" 
+		"128": "assets/logo-128.png"
 	},
 	"commands": {
 		"open-omni": {
 			"suggested_key": {
-        "default": "Ctrl+K",
-        "mac": "Command+K"
-      },
+				"default": "Ctrl+K",
+				"mac": "Command+K"
+			},
 			"description": "Open command menu"
 		}
 	},
-  "background": {
-    "service_worker": "background.js"
-  },
-  "content_scripts": [
+	"background": {
+		"service_worker": "background.js"
+	},
+	"content_scripts": [
 		{
 			"matches": [
 				"<all_urls>"
@@ -37,17 +37,17 @@
 			"js": ["jquery.js", "content.js"],
 			"css": ["content.css"]
 		}
-  ],
-  "web_accessible_resources": [
-    {
-      "resources":  ["content.html", "assets/*", "popup.css", "popup.js"],
-      "matches": ["<all_urls>"]
-    }
-  ],
-  "permissions": [
-    "tabs", "activeTab", "bookmarks", "browsingData", "history", "scripting"
-  ],
-  "host_permissions": [
-    "https://www.googleapis.com/*", "https://gstatic.com/*", "*://*/*"
-  ]
+	],
+	"web_accessible_resources": [
+		{
+			"resources":  ["content.html", "assets/*", "popup.css", "popup.js"],
+			"matches": ["<all_urls>"]
+		}
+	],
+	"permissions": [
+		"tabs", "activeTab", "bookmarks", "browsingData", "history", "scripting"
+	],
+	"host_permissions": [
+		"https://www.googleapis.com/*", "https://gstatic.com/*", "*://*/*"
+	]
 }
