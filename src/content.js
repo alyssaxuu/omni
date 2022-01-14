@@ -93,28 +93,51 @@ $(document).ready(function(){
     $(this).addClass("omni-item-active");
   }
 
+	// Autocomplete commands. Since they all start with different letters, it can be the default behavior
+	function checkShortHand(e, value) {
+		var el = $(".omni-extension input");
+		if (e.keyCode != 8) {
+			if (value == "/t") {
+				el.val("/tabs ")
+			} else if (value == "/b") {
+				el.val("/bookmarks ")
+			} else if (value == "/h") {
+				el.val("/history ");
+			} else if (value == "/r") {
+				el.val("/remove ");
+			} else if (value == "/a") {
+				el.val("/actions ");
+			}
+		} else {
+			if (value == "/tabs" || value == "/bookmarks" || value == "/actions" || value == "/remove" || value == "/history") {
+				el.val("");
+			}
+		}
+	}
+
 	// Search for an action in the omni
-  function search() {
+  function search(e) {
     var value = $(this).val().toLowerCase();
+		checkShortHand(e, value);
+		value = $(this).val().toLowerCase();
 		if (value.startsWith("/history")) {
-			var tempvalue = value.replace("/tabs ", "");
+			var tempvalue = value.replace("/history ", "");
 			var query = "";
 			if (tempvalue != "/history") {
-				query = value.replace("/history ", "");
+				query = value.replace("/history " + " ", "");
 			}
 			chrome.runtime.sendMessage({request:"search-history", query:query}, function(response){
 				populateOmniFilter(response.history);
 			});
 		} else if (value.startsWith("/bookmarks")) {
 			var tempvalue = value.replace("/bookmarks ", "");
-			if (tempvalue != "/bookmarks" || "/bookmarks ") {
+			if (tempvalue != "/bookmarks" && tempvalue != "") {
 				var query = value.replace("/bookmarks ", "");
 				chrome.runtime.sendMessage({request:"search-bookmarks", query:query}, function(response){
 					populateOmniFilter(response.bookmarks);
 				});
 			} else {
-				console.log("here")
-				populateOmni(actions.filter(x => x.type == "bookmark"));
+				populateOmniFilter(actions.filter(x => x.type == "bookmark"));
 			}
 		} else {
 			if (isFiltered) {
@@ -122,31 +145,28 @@ $(document).ready(function(){
 				isFiltered = false;
 			}
 			$("#omni-extension #omni-list .omni-item").filter(function(){
-				if (value.startsWith("/tabs") || value.startsWith("/t")) {
-					var targetAction = value.startsWith("/tabs") ? "/tabs" : "/t";
-					var tempvalue = value.replace(targetAction + " ", "")
-					if (tempvalue == targetAction) {
+				if (value.startsWith("/tabs")) {
+					var tempvalue = value.replace("/tabs ", "");
+					if (tempvalue == "/tabs") {
 						$(this).toggle($(this).attr("data-type") == "tab");
 					} else {
-						tempvalue = value.replace(targetAction + " ", "");
+						tempvalue = value.replace("/tabs ", "");
 						$(this).toggle(($(this).find(".omni-item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".omni-item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && $(this).attr("data-type") == "tab");
 					}
-				} else if (value.startsWith("/remove") || value.startsWith("/r")) {
-					var targetAction = value.startsWith("/remove") ? "/remove" : "/r";
-					var tempvalue = value.replace(targetAction + " ", "")
-					if (tempvalue == targetAction) {
+				} else if (value.startsWith("/remove")) {
+					var tempvalue = value.replace("/remove ", "")
+					if (tempvalue == "/remove") {
 						$(this).toggle($(this).attr("data-type") == "bookmark" || $(this).attr("data-type") == "tab");
 					} else {
-						tempvalue = value.replace(targetAction + " ", "");
+						tempvalue = value.replace("/remove ", "");
 						$(this).toggle(($(this).find(".omni-item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".omni-item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && ($(this).attr("data-type") == "bookmark" || $(this).attr("data-type") == "tab"));
 					}
-				} else if (value.startsWith("/actions") || value.startsWith("/a")) {
-					var targetAction = value.startsWith("/actions") ? "/actions" : "/a";
-					var tempvalue = value.replace(targetAction + " ", "")
-					if (tempvalue == targetAction) {
+				} else if (value.startsWith("/actions")) {
+					var tempvalue = value.replace("/actions ", "")
+					if (tempvalue == "/actions") {
 						$(this).toggle($(this).attr("data-type") == "action");
 					} else {
-						tempvalue = value.replace(targetAction + " ", "");
+						tempvalue = value.replace("/actions ", "");
 						$(this).toggle(($(this).find(".omni-item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".omni-item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && $(this).attr("data-type") == "action");
 					}
 				} else {
@@ -303,7 +323,7 @@ $(document).ready(function(){
   // Events
 	$(document).on("click", "#open-page-omni-extension-thing", openShortcuts);
   $(document).on("mouseover", ".omni-extension .omni-item:not(.omni-item-active)", hoverItem);
-  $(document).on("input", ".omni-extension input", search);
+  $(document).on("keyup", ".omni-extension input", search);
 	$(document).on("click", ".omni-item-active", handleAction);
 	$(document).on("click", ".omni-extension #omni-overlay", closeOmni);
 });
