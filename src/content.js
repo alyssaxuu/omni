@@ -117,6 +117,9 @@ $(document).ready(function(){
 
 	// Search for an action in the omni
   function search(e) {
+		if (e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40 || e.keyCode == 13 || e.keyCode == 37) {
+			return;
+		}
     var value = $(this).val().toLowerCase();
 		checkShortHand(e, value);
 		value = $(this).val().toLowerCase();

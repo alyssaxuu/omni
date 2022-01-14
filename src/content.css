@@ -53,6 +53,9 @@
  font-weight: 700;
  src: url('chrome-extension://__MSG_@@extension_id__/assets/Inter-Bold.ttf');
 }
+.omni-extension * {
+	display: block;
+}
 .omni-extension .omni-item-details * {
 	line-height: normal;
 }
@@ -133,7 +136,7 @@
   margin-left: 3px;
 }
 .omni-extension .omni-shortcut {
-  display: inline-block;
+  display: inline-block!important;
 	font-size: 13px;
   border-radius: 5px;
   background-color: var(--shortcut);
@@ -238,7 +241,7 @@
 	font-size: 18px;
 }
 .omni-extension .omni-item-details {
-  display: inline-block;
+  display: inline-block!important;
   margin-left: 10px;
   vertical-align: middle;
   margin-top: 10px;
