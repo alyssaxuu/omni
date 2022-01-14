@@ -148,7 +148,9 @@ chrome.runtime.onInstalled.addListener(function (object) {
 		}
 	});
 
-	chrome.tabs.create({url: "https://alyssax.com/omni/"});
+	if (object.reason == "install") {
+		chrome.tabs.create({url: "https://alyssax.com/omni/"});
+	}
 });
 
 // Check when the extension button is clicked
