@@ -250,7 +250,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 450px;
+  width: 460px;
 }
 .omni-extension .omni-item-active .omni-item-name {
   color: var(--text)!important;
@@ -259,6 +259,10 @@
   color: var(--text-3);
   margin-top: 5px;
 	font-size: 14px;
+	white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 460px;
 }
 .omni-extension #omni-footer {
   height: 45px;

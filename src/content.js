@@ -56,9 +56,9 @@ $(document).ready(function(){
 				img = "<span class='omni-emoji-action'>"+action.emojiChar+"</span>"
 			}
 			if (index != 0) {
-				$("#omni-extension #omni-list").append("<div class='omni-item' data-type='"+action.type+"' data-url='"+action.url+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.desc+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>");
+				$("#omni-extension #omni-list").append("<div class='omni-item' data-type='"+action.type+"' data-url='"+action.url+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.url+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>");
 			} else {
-				$("#omni-extension #omni-list").append("<div class='omni-item omni-item-active' data-type='"+action.type+"' data-url='"+action.url+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.desc+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>");
+				$("#omni-extension #omni-list").append("<div class='omni-item omni-item-active' data-type='"+action.type+"' data-url='"+action.url+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.url+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>");
 			}
 		})
 		$(".omni-extension #omni-results").html(actions.length+" results");
