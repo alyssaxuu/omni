@@ -107,43 +107,46 @@ $(document).ready(function(){
 			});
 		} else if (value.startsWith("/bookmarks")) {
 			var tempvalue = value.replace("/bookmarks ", "");
-			var query = "";
 			if (tempvalue != "/bookmarks" || "/bookmarks ") {
-				query = value.replace("/bookmarks ", "");
+				var query = value.replace("/bookmarks ", "");
+				chrome.runtime.sendMessage({request:"search-bookmarks", query:query}, function(response){
+					populateOmniFilter(response.bookmarks);
+				});
 			} else {
-				
+				console.log("here")
+				populateOmni(actions.filter(x => x.type == "bookmark"));
 			}
-			chrome.runtime.sendMessage({request:"search-bookmarks", query:query}, function(response){
-				populateOmniFilter(response.bookmarks);
-			});
 		} else {
 			if (isFiltered) {
 				populateOmni();
 				isFiltered = false;
 			}
 			$("#omni-extension #omni-list .omni-item").filter(function(){
-				if (value.startsWith("/tabs")) {
-					var tempvalue = value.replace("/tabs ", "");
-					if (tempvalue == "/tabs") {
+				if (value.startsWith("/tabs") || value.startsWith("/t")) {
+					var targetAction = value.startsWith("/tabs") ? "/tabs" : "/t";
+					var tempvalue = value.replace(targetAction + " ", "")
+					if (tempvalue == targetAction) {
 						$(this).toggle($(this).attr("data-type") == "tab");
 					} else {
-						tempvalue = value.replace("/tabs ", "");
+						tempvalue = value.replace(targetAction + " ", "");
 						$(this).toggle(($(this).find(".omni-item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".omni-item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && $(this).attr("data-type") == "tab");
 					}
-				} else if (value.startsWith("/remove")) {
-					var tempvalue = value.replace("/remove ", "");
-					if (tempvalue == "/remove") {
+				} else if (value.startsWith("/remove") || value.startsWith("/r")) {
+					var targetAction = value.startsWith("/remove") ? "/remove" : "/r";
+					var tempvalue = value.replace(targetAction + " ", "")
+					if (tempvalue == targetAction) {
 						$(this).toggle($(this).attr("data-type") == "bookmark" || $(this).attr("data-type") == "tab");
 					} else {
-						tempvalue = value.replace("/remove ", "");
+						tempvalue = value.replace(targetAction + " ", "");
 						$(this).toggle(($(this).find(".omni-item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".omni-item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && ($(this).attr("data-type") == "bookmark" || $(this).attr("data-type") == "tab"));
 					}
-				} else if (value.startsWith("/actions")) {
-					var tempvalue = value.replace("/actions ", "");
-					if (tempvalue == "/actions") {
+				} else if (value.startsWith("/actions") || value.startsWith("/a")) {
+					var targetAction = value.startsWith("/actions") ? "/actions" : "/a";
+					var tempvalue = value.replace(targetAction + " ", "")
+					if (tempvalue == targetAction) {
 						$(this).toggle($(this).attr("data-type") == "action");
 					} else {
-						tempvalue = value.replace("/actions ", "");
+						tempvalue = value.replace(targetAction + " ", "");
 						$(this).toggle(($(this).find(".omni-item-name").text().toLowerCase().indexOf(tempvalue) > -1 || $(this).find(".omni-item-desc").text().toLowerCase().indexOf(tempvalue) > -1) && $(this).attr("data-type") == "action");
 					}
 				} else {
@@ -284,7 +287,7 @@ $(document).ready(function(){
 
 		down = [];
 	});
-	
+
 	// Recieve messages from background
 	chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 		if (message.request == "open-omni") {
