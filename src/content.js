@@ -158,25 +158,35 @@ $(document).ready(function(){
 			window.open($(".omni-item-active").attr("data-url"), "_self");
 		} else {
 			chrome.runtime.sendMessage({request:action.action, tab:action});
-			if (action.action == "bookmark") {
-				window.open(action.url, "_self");
-			} else if (action.action == "scroll-bottom") {
-				window.scrollTo(0,document.body.scrollHeight);
-			} else if (action.action == "scroll-top") {
-				window.scrollTo(0,0);
-			} else if (action.action == "close-tab") {
-				window.close();
-			} else if (action.action == "navigation") {
-				window.open(action.url, "_self");
-			} else if (action.action == "fullscreen") {
-				var elem = document.documentElement;
-				elem.requestFullscreen();
-			} else if (action.action == "new-tab") {
-				window.open("");
-			} else if (action.action == "email") {
-				window.open("mailto:");
-			} else if (action.action == "url") {
-				window.open(action.url, "_self");
+			switch (action.action) {
+				case "bookmark":
+					window.open(action.url, "_self");
+					break;
+				case "scroll-bottom":
+					window.scrollTo(0,document.body.scrollHeight);
+					break;
+				case "scroll-top":
+					window.scrollTo(0,0);
+					break;
+				case "close-tab":
+					window.close();
+					break;
+				case "navigation":
+					window.open(action.url, "_self");
+					break;
+				case "fullscreen":
+					var elem = document.documentElement;
+					elem.requestFullscreen();
+					break;
+				case "new-tab":
+					window.open("");
+					break;
+				case "email":
+					window.open("mailto:");
+					break;
+				case "url":
+					window.open(action.url, "_self");
+					break;
 			}
 		}
 
