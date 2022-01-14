@@ -149,18 +149,26 @@ $(document).ready(function(){
   }
 
 	// Handle actions from the omni
-	function handleAction() {
+	function handleAction(e) {
 		var action = actions.find(x => x.title == $(".omni-item-active .omni-item-name").text());
 		closeOmni();
 		if ($(".omni-extension input").val().toLowerCase().startsWith("/remove")) {
 			chrome.runtime.sendMessage({request:"remove", type:action.type, action:action});
 		} else if ($(".omni-extension input").val().toLowerCase().startsWith("/history")) {
-			window.open($(".omni-item-active").attr("data-url"), "_self");
+			if (e.ctrlKey || e.metaKey) {
+				window.open($(".omni-item-active").attr("data-url"), "_self");
+			} else {
+				window.open($(".omni-item-active").attr("data-url"));
+			}
 		} else {
 			chrome.runtime.sendMessage({request:action.action, tab:action});
 			switch (action.action) {
 				case "bookmark":
-					window.open(action.url, "_self");
+					if (e.ctrlKey || e.metaKey) {
+						window.open(action.url);
+					} else {
+						window.open(action.url, "_self");
+					}
 					break;
 				case "scroll-bottom":
 					window.scrollTo(0,document.body.scrollHeight);
@@ -172,7 +180,11 @@ $(document).ready(function(){
 					window.close();
 					break;
 				case "navigation":
-					window.open(action.url, "_self");
+					if (e.ctrlKey) {
+						window.open(action.url);
+					} else {
+						window.open(action.url, "_self");
+					}
 					break;
 				case "fullscreen":
 					var elem = document.documentElement;
@@ -185,7 +197,11 @@ $(document).ready(function(){
 					window.open("mailto:");
 					break;
 				case "url":
-					window.open(action.url, "_self");
+					if (e.ctrlKey || e.metaKey) {
+						window.open(action.url);
+					} else {
+						window.open(action.url, "_self");
+					}
 					break;
 			}
 		}
