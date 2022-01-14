@@ -21,6 +21,7 @@ Made by [Alyssa X](https://alyssax.com)
   - [Closing Omni](#closing-omni)
   - [Switching between dark and light mode](#switching-between-dark-and-light-mode)
 - [List of commands](#list-of-commands)
+- [Self-hosting Omni](#self-hosting-omni)
 - [Libraries used](#libraries-used)
 
 ## Features
@@ -58,6 +59,14 @@ You can use a variety of commands with Omni to perform actions or filter your re
 - **/history**: Search your browser history
 - **/actions**: Search all available actions
 - **/remove**: Remove a bookmark or close a tab
+
+## Self-hosting Omni
+You can run Omni locally without having to install it from the Chrome Store. Here's how:
+
+1. Download the code. In the web version of GitHub, you can do that by clicking the green "Code" button, and then "Download ZIP".
+2. Go to chrome://extensions/ in your browser, and [enable developer mode](https://developer.chrome.com/docs/extensions/mv2/faq/#:~:text=You%20can%20start%20by%20turning,a%20packaged%20extension%2C%20and%20more.).
+3. Drag the [src folder](https://github.com/alyssaxuu/omni/tree/master/src) (make sure it's a folder and not a ZIP file, so unzip first), or click on the "Load unpacked" button and locate the folder.
+4. That's it, you will now be able to use Omni locally.
 
 ## Libraries used
 
