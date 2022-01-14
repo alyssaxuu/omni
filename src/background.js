@@ -208,14 +208,15 @@ function getBookmarks() {
 		for (var i = 0; i < bookmarks.length; i++) {
 			var bookmark = bookmarks[i];
 			if (bookmark.url) {
-					actions.push({title:bookmark.title, desc:"Bookmark", id:bookmark.id, url:bookmark.url, type:"bookmark", action:"bookmark", emoji:true, emojiChar:"⭐️", keycheck:false})
+				actions.push({title:bookmark.title, desc:"Bookmark", id:bookmark.id, url:bookmark.url, type:"bookmark", action:"bookmark", emoji:true, emojiChar:"⭐️", keycheck:false})
 			}
 			if (bookmark.children) {
-					process_bookmark(bookmark.children);
+				process_bookmark(bookmark.children);
 			}
 		}
 	}
-	chrome.bookmarks.getTree(process_bookmark);
+
+	chrome.bookmarks.getRecent(100, process_bookmark);
 }
 
 // Lots of different actions
@@ -389,9 +390,35 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 					action.emoji = true;
 					action.emojiChar = "🏛";
 					action.action = "history";
-					action.desc = "Browsing history";
+					action.keyCheck = false;
 				});
 				sendResponse({history:data});
+			})
+			return true;
+		case "search-bookmarks":
+			chrome.bookmarks.search({query:message.query}).then(function(data){
+				// The index property of the bookmark appears to be causing issues, iterating separately...
+				data.filter(x => x.index == 0).forEach(function(action, index){
+					if (!action.url) {
+						data.splice(index, 1);
+					}
+					action.type = "bookmark";
+					action.emoji = true;
+					action.emojiChar = "⭐️";
+					action.action = "bookmark";
+					action.keyCheck = false;
+				})
+				data.forEach(function(action, index){
+					if (!action.url) {
+						data.splice(index, 1);
+					}
+					action.type = "bookmark";
+					action.emoji = true;
+					action.emojiChar = "⭐️";
+					action.action = "bookmark";
+					action.keyCheck = false;
+				})
+				sendResponse({bookmarks:data});
 			})
 			return true;
 		case "remove":
