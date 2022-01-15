@@ -224,8 +224,13 @@ function getBookmarks() {
 // Lots of different actions
 function switchTab(tab) {
 	chrome.tabs.highlight({
-		tabs: tab.index
+		tabs: tab.index,
+		windowId: tab.windowId
 	})
+	chrome.windows.update(
+		tab.windowId,
+		{ focused: true }
+	)
 }
 function goBack(tab) {
 	chrome.tabs.goBack({
