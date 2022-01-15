@@ -1,11 +1,11 @@
-var actions = [];
+let actions = [];
 
 // Clear actions and append default ones
-function clearActions() {
+const clearActions = () => {
 	getCurrentTab().then((response) => {
-		var isMac = navigator.platform.toUpperCase().indexOf('MAC')>=0;
-		var muteaction = {title:"Mute tab", desc:"Mute the current tab", type:"action", action:"mute", emoji:true, emojiChar:"🔇", keycheck:true, keys:['⌥','⇧', 'M']};
-		var pinaction = {title:"Pin tab", desc:"Pin the current tab", type:"action", action:"pin", emoji:true, emojiChar:"📌", keycheck:true, keys:['⌥','⇧', 'P']};
+		const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+		let muteaction = {title:"Mute tab", desc:"Mute the current tab", type:"action", action:"mute", emoji:true, emojiChar:"🔇", keycheck:true, keys:['⌥','⇧', 'M']};
+		let pinaction = {title:"Pin tab", desc:"Pin the current tab", type:"action", action:"pin", emoji:true, emojiChar:"📌", keycheck:true, keys:['⌥','⇧', 'P']};
 		if (response.mutedInfo.muted) {
 			muteaction = {title:"Unmute tab", desc:"Unmute the current tab", type:"action", action:"unmute", emoji:true, emojiChar:"🔈", keycheck:true, keys:['⌥','⇧', 'M']};
 		}
@@ -71,8 +71,9 @@ function clearActions() {
 			{title:"Clear local storage", desc:"Clear the local storage", type:"action", action:"remove-local-storage", emoji:true, emojiChar:"📦", keycheck:false, keys:['⌘','D']},
 			{title:"Clear passwords", desc:"Clear all saved passwords", type:"action", action:"remove-passwords", emoji:true, emojiChar:"🔑", keycheck:false, keys:['⌘','D']},
 		];
+
 		if (!isMac) {
-			actions.forEach(function(action){
+			for (action in actions) {
 				switch (action.action) {
 					case "reload":
 						action.keys = ['F5'];
@@ -102,55 +103,66 @@ function clearActions() {
 						action.keys = ['End'];
 						break;
 				}
-				action.keys.forEach(function(key){
-					if (key == "⌘") {
+				for (const key in action.keys) {
+					if (key === "⌘") {
 						key = "Ctrl";
-					} else if (key == "⌥") {
+					} else if (key === "⌥") {
 						key = "Alt";
 					}
-				});
-			});
+				};
+			};
 		}
 	});
 }
 
 // Open on install
-chrome.runtime.onInstalled.addListener(function (object) {
-	// Inject Omni on install
-	chrome.manifest = chrome.runtime.getManifest();
-	var injectIntoTab = function (tab) {
-		var scripts = chrome.manifest.content_scripts[0].js;
-		var i = 0, s = scripts.length;
-		for( ; i < s; i++ ) {
-			chrome.scripting.executeScript({
-				target: {tabId: tab.id},
-				files: [scripts[i]]
-			});
-		}
-		chrome.scripting.insertCSS({
-			target: {tabId: tab.id},
-			files: [chrome.manifest.content_scripts[0].css[0]]
-		});
-	}
+chrome.runtime.onInstalled.addListener((object) => {
+  // Inject Omni on install
+  const manifest = chrome.runtime.getManifest();
 
-	// Get all windows
-	chrome.windows.getAll({
-		populate: true
-	}, function (windows) {
-		var i = 0, w = windows.length, currentWindow;
-		for( ; i < w; i++ ) {
-			currentWindow = windows[i];
-			var j = 0, t = currentWindow.tabs.length, currentTab;
-			for( ; j < t; j++ ) {
-				currentTab = currentWindow.tabs[j];
-				injectIntoTab(currentTab);
-			}
-		}
-	});
+  const injectIntoTab = (tab) => {
+    const scripts = manifest.content_scripts[0].js;
+    const s = scripts.length;
 
-	if (object.reason == "install") {
-		chrome.tabs.create({url: "https://alyssax.com/omni/"});
-	}
+    for (let i = 0; i < s; i++) {
+      chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        files: [scripts[i]],
+      });
+    }
+
+    chrome.scripting.insertCSS({
+      target: { tabId: tab.id },
+      files: [manifest.content_scripts[0].css[0]],
+    });
+  };
+
+  // Get all windows
+  chrome.windows.getAll(
+    {
+      populate: true,
+    },
+    (windows) => {
+      let currentWindow;
+      const w = windows.length;
+
+      for (let i = 0; i < w; i++) {
+        currentWindow = windows[i];
+
+        let currentTab;
+        const t = currentWindow.tabs.length;
+
+        for (let j = 0; j < t; j++) {
+          currentTab = currentWindow.tabs[j];
+          injectIntoTab(currentTab);
+        }
+      }
+    }
+  );
+
+  if (object.reason === "install") {
+    chrome.tabs.create({ url: "https://alyssax.com/omni/" });
+  }
 });
 
 // Check when the extension button is clicked
@@ -160,41 +172,35 @@ chrome.action.onClicked.addListener((tab) => {
 
 // Listen for the open omni shortcut
 chrome.commands.onCommand.addListener((command) => {
-	if (command == "open-omni") {
-		chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+	if (command === "open-omni") {
+		chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
 			chrome.tabs.sendMessage(tabs[0].id, {request: "open-omni"});
 		});
 	}
 });
 
+const resetOmni = () => {
+	clearActions();
+	getTabs();
+	getBookmarks();
+}
+
 // Check if tabs have changed and actions need to be fetched again
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-	clearActions();
-	getTabs();
-	getBookmarks();
-});
-chrome.tabs.onCreated.addListener(function(tabId, changeInfo, tab) {
-	clearActions();
-	getTabs();
-	getBookmarks();
-});
-chrome.tabs.onRemoved.addListener(function(tabId, changeInfo, tab) {
-	clearActions();
-	getTabs();
-	getBookmarks();
-});
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => resetOmni());
+chrome.tabs.onCreated.addListener((tab) => resetOmni());
+chrome.tabs.onRemoved.addListener((tabId, changeInfo) => resetOmni());
 
 // Get the current tab
-async function getCurrentTab() {
-	let queryOptions = { active: true, currentWindow: true };
-	let [tab] = await chrome.tabs.query(queryOptions);
+const getCurrentTab = async () => {
+	const queryOptions = { active: true, currentWindow: true };
+	const [tab] = await chrome.tabs.query(queryOptions);
 	return tab;
 }
 
 // Get tabs to populate in the actions
-function getTabs() {
-	chrome.tabs.query({}, function(tabs) {
-		tabs.forEach(function(tab){
+const getTabs = () => {
+	chrome.tabs.query({}, (tabs) => {
+		tabs.forEach((tab) => {
 			tab.desc = "Chrome tab";
 			tab.keycheck = false;
 			tab.action = "switch-tab";
@@ -205,10 +211,9 @@ function getTabs() {
 }
 
 // Get bookmarks to populate in the actions
-function getBookmarks() {
-	function process_bookmark(bookmarks) {
-		for (var i = 0; i < bookmarks.length; i++) {
-			var bookmark = bookmarks[i];
+const getBookmarks = () => {
+	const process_bookmark = (bookmarks) => {
+		for (const bookmark of bookmarks) { 
 			if (bookmark.url) {
 				actions.push({title:bookmark.title, desc:"Bookmark", id:bookmark.id, url:bookmark.url, type:"bookmark", action:"bookmark", emoji:true, emojiChar:"⭐️", keycheck:false})
 			}
@@ -222,27 +227,27 @@ function getBookmarks() {
 }
 
 // Lots of different actions
-function switchTab(tab) {
+const switchTab = (tab) => {
 	chrome.tabs.highlight({
 		tabs: tab.index
 	})
 }
-function goBack(tab) {
+const goBack = (tab) => {
 	chrome.tabs.goBack({
 		tabs: tab.index
 	})
 }
-function goForward(tab){
+const goForward = (tab) => {
 	chrome.tabs.goForward({
 		tabs: tab.index
 	})
 }
-function duplicateTab(tab) {
+const duplicateTab = (tab) => {
 	getCurrentTab().then((response) => {
 		chrome.tabs.duplicate(response.id);
 	})
 }
-function createBookmark(tab) {
+const createBookmark = (tab) => {
 	getCurrentTab().then((response) => {
 		chrome.bookmarks.create({
 			title: response.title,
@@ -250,20 +255,20 @@ function createBookmark(tab) {
 		});
 	})
 }
-function muteTab(mute) {
+const muteTab = (mute) =>{
 	getCurrentTab().then((response) => {
 		chrome.tabs.update(response.id, {"muted": mute})
 	});
 }
-function reloadTab() {
+const reloadTab = () => {
 	chrome.tabs.reload();
 }
-function pinTab(pin) {
+const pinTab = (pin) => {
 	getCurrentTab().then((response) => {
 		chrome.tabs.update(response.id, {"pinned": pin})
 	});
 }
-function clearAllData() {
+const clearAllData = () => {
 	chrome.browsingData.remove({
 		"since": (new Date()).getTime()
 	}, {
@@ -282,34 +287,34 @@ function clearAllData() {
 		"webSQL": true
 	});
 }
-function clearBrowsingData() {
+const clearBrowsingData = () => {
 	chrome.browsingData.removeHistory({"since": 0});
 }
-function clearCookies() {
+const clearCookies = () =>{
 	chrome.browsingData.removeCookies({"since": 0});
 }
-function clearCache() {
+const clearCache = () => {
 	chrome.browsingData.removeCache({"since": 0});
 }
-function clearLocalStorage() {
+const clearLocalStorage = () => {
 	chrome.browsingData.removeLocalStorage({"since": 0});
 }
-function clearPasswords() {
+const clearPasswords = () => {
 	chrome.browsingData.removePasswords({"since": 0});
 }
-function openChromeUrl(url) {
+const openChromeUrl = (url) => {
 	chrome.tabs.create({url: 'chrome://'+url+'/'});
 }
-function openIncognito() {
+const openIncognito = () => {
 	chrome.windows.create({"incognito": true});
 }
-function closeWindow(id) {
+const closeWindow = (id) => {
 	chrome.windows.remove(id);
 }
-function closeTab(tab) {
+const closeTab = (tab) => {
 	chrome.tabs.remove(tab.id);
 }
-function removeBookmark(bookmark) {
+const removeBookmark = (bookmark) => {
 	chrome.bookmarks.remove(bookmark.id);
 }
 
@@ -386,21 +391,21 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 			closeWindow(sender.tab.windowId);
 			break;
 		case "search-history":
-			chrome.history.search({text:message.query, maxResults:1000, startTime:31536000000*5}).then(function(data){
-				data.forEach(function(action){
+			chrome.history.search({text:message.query, maxResults:1000, startTime:31536000000*5}).then((data) => {
+				for (let action in actions) {
 					action.type = "history";
 					action.emoji = true;
 					action.emojiChar = "🏛";
 					action.action = "history";
 					action.keyCheck = false;
-				});
+				};
 				sendResponse({history:data});
 			})
 			return true;
 		case "search-bookmarks":
-			chrome.bookmarks.search({query:message.query}).then(function(data){
+			chrome.bookmarks.search({query:message.query}).then((data) => {
 				// The index property of the bookmark appears to be causing issues, iterating separately...
-				data.filter(x => x.index == 0).forEach(function(action, index){
+				data.filter(x => x.index == 0).forEach((action, index) => {
 					if (!action.url) {
 						data.splice(index, 1);
 					}
@@ -410,7 +415,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 					action.action = "bookmark";
 					action.keyCheck = false;
 				})
-				data.forEach(function(action, index){
+				data.forEach((action, index) => {
 					if (!action.url) {
 						data.splice(index, 1);
 					}
