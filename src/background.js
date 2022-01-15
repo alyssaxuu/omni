@@ -73,7 +73,7 @@ const clearActions = () => {
 		];
 
 		if (!isMac) {
-			for (action in actions) {
+			for (action of actions) {
 				switch (action.action) {
 					case "reload":
 						action.keys = ['F5'];
@@ -104,10 +104,10 @@ const clearActions = () => {
 						break;
 				}
 				for (const key in action.keys) {
-					if (key === "⌘") {
-						key = "Ctrl";
-					} else if (key === "⌥") {
-						key = "Alt";
+					if (action.keys[key] === "⌘") {
+						action.keys[key] = "Ctrl";
+					} else if (action.keys[key] === "⌥") {
+						action.keys[key] = "Alt";
 					}
 				};
 			};
