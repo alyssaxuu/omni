@@ -127,7 +127,7 @@ $(document).ready(function(){
 			var tempvalue = value.replace("/history ", "");
 			var query = "";
 			if (tempvalue != "/history") {
-				query = value.replace("/history " + " ", "");
+				query = value.replace("/history ", "");
 			}
 			chrome.runtime.sendMessage({request:"search-history", query:query}, function(response){
 				populateOmniFilter(response.history);
