@@ -210,9 +210,6 @@ $(document).ready(function(){
 				case "scroll-top":
 					window.scrollTo(0,0);
 					break;
-				case "close-tab":
-					window.close();
-					break;
 				case "navigation":
 					if (e.ctrlKey) {
 						window.open(action.url);
