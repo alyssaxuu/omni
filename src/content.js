@@ -271,6 +271,12 @@ $(document).ready(function(){
 				next.addClass("omni-item-active");
 				next[0].scrollIntoView({block:"nearest", inline:"nearest"});
 			}
+		} else if (down[27] && isOpen) {
+			// Esc key
+			closeOmni();
+		} else if (down[13] && isOpen) {
+			// Enter key
+			handleAction(e);
 		}
 	}).keyup(function(e) {
 		if (down[18] && down[16] && down[80]) {
@@ -295,14 +301,6 @@ $(document).ready(function(){
 			});
 		} else if (down[18] && down[16] && down[67]) {
 			window.open("mailto:");
-		}
-
-		if (down[27] && isOpen) {
-			// Esc key
-			closeOmni();
-		} else if (down[13] && isOpen) {
-			// Enter key
-			handleAction();
 		}
 
 		down = [];
