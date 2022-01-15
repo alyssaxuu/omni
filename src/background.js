@@ -319,6 +319,9 @@ const closeWindow = (id) => {
 const closeTab = (tab) => {
 	chrome.tabs.remove(tab.id);
 }
+const closeCurrentTab = () => {
+	getCurrentTab().then(closeTab)
+}
 const removeBookmark = (bookmark) => {
 	chrome.bookmarks.remove(bookmark.id);
 }
@@ -394,6 +397,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 			break;
 		case "close-window":
 			closeWindow(sender.tab.windowId);
+			break;
+		case "close-tab":
+			closeCurrentTab();
 			break;
 		case "search-history":
 			chrome.history.search({text:message.query, maxResults:1000, startTime:31536000000*5}).then((data) => {
