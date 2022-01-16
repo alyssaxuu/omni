@@ -32,7 +32,7 @@ Made by [Alyssa X](https://alyssax.com)
 
 ### Opening Omni
 
-To open Omni, simply press `⌘+K` on Mac or `Ctrl+K` on Windows. You can change the shortcut by going to chrome://extensions/shortcuts.
+To open Omni, simply press `⌘+Shift+K` on Mac or `Ctrl+Shift+K` on Windows. You can change the shortcut by going to chrome://extensions/shortcuts.
 
 Alternatively you can click on the extension icon in the toolbar to toggle it.
 
