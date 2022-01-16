@@ -1,5 +1,10 @@
+var isOpen = false;
+document.onkeyup = (e) => {
+	if (e.key == "Escape" && isOpen) {
+		chrome.runtime.sendMessage({request:"close-omni"})
+	}
+}
 $(document).ready(function(){
-	var isOpen = false;
 	var actions = [];
 	var isFiltered = false;
 
@@ -25,7 +30,6 @@ $(document).ready(function(){
 
 	// Add actions to the omni
 	function populateOmni() {
-		console.log("check times");
 		$("#omni-extension #omni-list").html("");
 		actions.forEach(function(action, index){
 			var keys = "";
@@ -67,7 +71,6 @@ $(document).ready(function(){
 					keys += "</div>";
 			}
 			var img = "<img src='"+action.favIconUrl+"' alt='favicon' onerror='this.src=&quot;"+chrome.runtime.getURL("/assets/globe.svg")+"&quot;' class='omni-icon'>";
-			console.log(action)
 			if (action.emoji) {
 				img = "<span class='omni-emoji-action'>"+action.emojiChar+"</span>"
 			}
@@ -370,6 +373,8 @@ $(document).ready(function(){
 			} else {
 				openOmni();
 			}
+		} else if (message.request == "close-omni") {
+			closeOmni();
 		}
 	});
 

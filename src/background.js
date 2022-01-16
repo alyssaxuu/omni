@@ -480,6 +480,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 		case "restore-new-tab":
 			restoreNewTab();
 			break;
+		case "close-omni":
+			getCurrentTab().then((response) => {
+				chrome.tabs.sendMessage(response.id, {request: "close-omni"});
+			});
+			break;
 		}
 });
 
