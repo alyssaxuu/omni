@@ -6,16 +6,26 @@ $(document).ready(function(){
 	// Append the omni into the current page
 	$.get(chrome.runtime.getURL('/content.html'), function(data) {
 		$(data).appendTo('body');
-	});
 
-	// Request actions from the background
-	chrome.runtime.sendMessage({request:"get-actions"}, function(response) {
-		actions = response.actions;
-		populateOmni();
+		// Request actions from the background
+		chrome.runtime.sendMessage({request:"get-actions"}, function(response) {
+			actions = response.actions;
+			populateOmni();
+		});
+
+		// New tab page workaround
+		if (window.location.href == "chrome-extension://mpanekjjajcabgnlbabmopeenljeoggm/newtab.html") {
+			isOpen = true;
+			$("#omni-extension").removeClass("omni-closing");
+			window.setTimeout(function(){
+				$("#omni-extension input").focus();
+			}, 100);
+		}
 	});
 
 	// Add actions to the omni
 	function populateOmni() {
+		console.log("check times");
 		$("#omni-extension #omni-list").html("");
 		actions.forEach(function(action, index){
 			var keys = "";
@@ -57,6 +67,7 @@ $(document).ready(function(){
 					keys += "</div>";
 			}
 			var img = "<img src='"+action.favIconUrl+"' alt='favicon' onerror='this.src=&quot;"+chrome.runtime.getURL("/assets/globe.svg")+"&quot;' class='omni-icon'>";
+			console.log(action)
 			if (action.emoji) {
 				img = "<span class='omni-emoji-action'>"+action.emojiChar+"</span>"
 			}
@@ -74,8 +85,8 @@ $(document).ready(function(){
 		chrome.runtime.sendMessage({request:"get-actions"}, function(response) {
 			isOpen = true;
 			actions = response.actions;
-			populateOmni();
 			$("#omni-extension input").val("");
+			populateOmni();
 			$("html, body").stop();
 			$("#omni-extension").removeClass("omni-closing");
 			window.setTimeout(function(){
@@ -86,8 +97,12 @@ $(document).ready(function(){
 
 	// Close the omni
 	function closeOmni() {
-		isOpen = false;
-		$("#omni-extension").addClass("omni-closing");
+		if (window.location.href == "chrome-extension://mpanekjjajcabgnlbabmopeenljeoggm/newtab.html") {
+			chrome.runtime.sendMessage({request:"restore-new-tab"});
+		} else {
+			isOpen = false;
+			$("#omni-extension").addClass("omni-closing");
+		}
 	}
 
 	// Hover over an action in the omni

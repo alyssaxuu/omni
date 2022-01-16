@@ -1,4 +1,5 @@
 let actions = [];
+let newtaburl = "";
 
 // Clear actions and append default ones
 const clearActions = () => {
@@ -175,11 +176,38 @@ chrome.action.onClicked.addListener((tab) => {
 // Listen for the open omni shortcut
 chrome.commands.onCommand.addListener((command) => {
 	if (command === "open-omni") {
-		chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-			chrome.tabs.sendMessage(tabs[0].id, {request: "open-omni"});
+		getCurrentTab().then((response) => {
+			if (!response.url.includes("chrome://") && !response.url.includes("chrome.google.com")) {
+				chrome.tabs.sendMessage(response.id, {request: "open-omni"});
+			} else {
+				chrome.tabs.create({
+					url: "./newtab.html" 
+				}).then(() => {
+					newtaburl = response.url;
+					chrome.tabs.remove(response.id);
+				})
+			}
 		});
 	}
 });
+
+// Get the current tab
+const getCurrentTab = async () => {
+	const queryOptions = { active: true, currentWindow: true };
+	const [tab] = await chrome.tabs.query(queryOptions);
+	return tab;
+}
+
+// Restore the new tab page (workaround to show Omni in new tab page)
+function restoreNewTab() {
+	getCurrentTab().then((response) => {
+		chrome.tabs.create({
+			url: newtaburl
+		}).then(() => {
+			chrome.tabs.remove(response.id);
+		})
+	})
+}
 
 const resetOmni = () => {
 	clearActions();
@@ -196,13 +224,6 @@ const resetOmni = () => {
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => resetOmni());
 chrome.tabs.onCreated.addListener((tab) => resetOmni());
 chrome.tabs.onRemoved.addListener((tabId, changeInfo) => resetOmni());
-
-// Get the current tab
-const getCurrentTab = async () => {
-	const queryOptions = { active: true, currentWindow: true };
-	const [tab] = await chrome.tabs.query(queryOptions);
-	return tab;
-}
 
 // Get tabs to populate in the actions
 const getTabs = () => {
@@ -408,13 +429,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 			break;
 		case "search-history":
 			chrome.history.search({text:message.query, maxResults:1000, startTime:31536000000*5}).then((data) => {
-				for (let action in actions) {
+				data.forEach((action, index) => {
 					action.type = "history";
 					action.emoji = true;
 					action.emojiChar = "🏛";
 					action.action = "history";
 					action.keyCheck = false;
-				};
+				});
 				sendResponse({history:data});
 			})
 			return true;
@@ -455,6 +476,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 			chrome.search.query(
 				{text:message.query}
 			)
+			break;
+		case "restore-new-tab":
+			restoreNewTab();
 			break;
 		}
 });
