@@ -32,9 +32,12 @@ $(document).ready(function(){
 				img = "<span class='omni-emoji-action'>"+action.emojiChar+"</span>"
 			}
 			if (index != 0) {
-				$("#omni-extension #omni-list").append("<div class='omni-item' data-type='"+action.type+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.desc+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>");
+				$("#omni-extension #omni-list").append("<div class='omni-item' data-index='"+index+"' data-type='"+action.type+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.desc+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>");
 			} else {
-				$("#omni-extension #omni-list").append("<div class='omni-item omni-item-active' data-type='"+action.type+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.desc+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>");
+				$("#omni-extension #omni-list").append("<div class='omni-item omni-item-active' data-index='"+index+"' data-type='"+action.type+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.desc+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>");
+			}
+			if (action.type == "action" && action.action == "search") {
+				$(".omni-item[data-index='"+index+"']").hide();
 			}
 		})
 		$(".omni-extension #omni-results").html(actions.length+" results");
@@ -58,9 +61,9 @@ $(document).ready(function(){
 				img = "<span class='omni-emoji-action'>"+action.emojiChar+"</span>"
 			}
 			if (index != 0) {
-				$("#omni-extension #omni-list").append("<div class='omni-item' data-type='"+action.type+"' data-url='"+action.url+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.url+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>");
+				$("#omni-extension #omni-list").append("<div class='omni-item' data-index='"+index+"' data-type='"+action.type+"' data-url='"+action.url+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.url+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>");
 			} else {
-				$("#omni-extension #omni-list").append("<div class='omni-item omni-item-active' data-type='"+action.type+"' data-url='"+action.url+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.url+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>");
+				$("#omni-extension #omni-list").append("<div class='omni-item omni-item-active' data-index='"+index+"' data-type='"+action.type+"' data-url='"+action.url+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.url+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>");
 			}
 		})
 		$(".omni-extension #omni-results").html(actions.length+" results");
@@ -113,6 +116,25 @@ $(document).ready(function(){
 				el.val("");
 			}
 		}
+	}
+
+	// Add protocol
+	function addhttp(url) {
+			if (!/^(?:f|ht)tps?\:\/\//.test(url)) {
+					url = "http://" + url;
+			}
+			return url;
+	}
+
+	// Check if valid url
+	function validURL(str) {
+		var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+			'((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+			'((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+			'(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+			'(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+			'(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+		return !!pattern.test(str);
 	}
 
 	// Search for an action in the omni
@@ -174,6 +196,18 @@ $(document).ready(function(){
 					}
 				} else {
 					$(this).toggle($(this).find(".omni-item-name").text().toLowerCase().indexOf(value) > -1 || $(this).find(".omni-item-desc").text().toLowerCase().indexOf(value) > -1);
+					if (value == "") {
+						$(".omni-item[data-index='"+actions.findIndex(x => x.action == "search")+"']").hide();
+						$(".omni-item[data-index='"+actions.findIndex(x => x.action == "goto")+"']").hide();
+					} else if (!validURL(value)) {
+						$(".omni-item[data-index='"+actions.findIndex(x => x.action == "search")+"']").show();
+						$(".omni-item[data-index='"+actions.findIndex(x => x.action == "goto")+"']").hide();
+						$(".omni-item[data-index='"+actions.findIndex(x => x.action == "search")+"'] .omni-item-name").html('\"'+value+'\"');
+					} else {
+						$(".omni-item[data-index='"+actions.findIndex(x => x.action == "search")+"']").hide();
+						$(".omni-item[data-index='"+actions.findIndex(x => x.action == "goto")+"']").show();
+						$(".omni-item[data-index='"+actions.findIndex(x => x.action == "goto")+"'] .omni-item-name").html(value);
+					}
 				}
 			});
 		}
@@ -184,7 +218,7 @@ $(document).ready(function(){
 
 	// Handle actions from the omni
 	function handleAction(e) {
-		var action = actions.find(x => x.title == $(".omni-item-active .omni-item-name").text());
+		var action = actions[$(".omni-item-active").attr("data-index")];
 		closeOmni();
 		if ($(".omni-extension input").val().toLowerCase().startsWith("/remove")) {
 			chrome.runtime.sendMessage({request:"remove", type:action.type, action:action});
@@ -195,7 +229,7 @@ $(document).ready(function(){
 				window.open($(".omni-item-active").attr("data-url"));
 			}
 		} else {
-			chrome.runtime.sendMessage({request:action.action, tab:action});
+			chrome.runtime.sendMessage({request:action.action, tab:action, query:$(".omni-extension input").val()});
 			switch (action.action) {
 				case "bookmark":
 					if (e.ctrlKey || e.metaKey) {
@@ -232,6 +266,13 @@ $(document).ready(function(){
 						window.open(action.url);
 					} else {
 						window.open(action.url, "_self");
+					}
+					break;
+				case "goto":
+					if (e.ctrlKey || e.metaKey) {
+						window.open(addhttp($(".omni-extension input").val()));
+					} else {
+						window.open(addhttp($(".omni-extension input").val()), "_self");
 					}
 					break;
 			}

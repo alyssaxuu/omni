@@ -2,7 +2,7 @@
 	"name": "Omni",
 	"description": "Supercharge Chrome with commands, shortcuts, and more",
 	"offline_enabled": true,
-	"version": "1.3.4",
+	"version": "1.3.5",
 	"manifest_version": 3,
 	"action": {
 		"icons": {
@@ -45,7 +45,7 @@
 		}
 	],
 	"permissions": [
-		"tabs", "activeTab", "bookmarks", "browsingData", "history", "scripting"
+		"tabs", "activeTab", "bookmarks", "browsingData", "history", "scripting", "search"
 	],
 	"host_permissions": [
 		"https://www.googleapis.com/*", "https://gstatic.com/*", "*://*/*"

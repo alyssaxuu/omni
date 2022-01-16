@@ -154,7 +154,9 @@ chrome.runtime.onInstalled.addListener((object) => {
 
         for (let j = 0; j < t; j++) {
           currentTab = currentWindow.tabs[j];
-          injectIntoTab(currentTab);
+					if (!currentTab.url.includes("chrome://") && !currentTab.url.includes("chrome-extension://") && !currentTab.url.includes("chrome.google.com")) {
+          	injectIntoTab(currentTab);
+					}
         }
       }
     }
@@ -183,6 +185,11 @@ const resetOmni = () => {
 	clearActions();
 	getTabs();
 	getBookmarks();
+	var search = [
+		{title:"Search", desc:"Search for a query", type:"action", action:"search", emoji:true, emojiChar:"🔍", keycheck:false},
+		{title:"Search", desc:"Go to website", type:"action", action:"goto", emoji:true, emojiChar:"🔍", keycheck:false}
+	];
+	actions = search.concat(actions);
 }
 
 // Check if tabs have changed and actions need to be fetched again
@@ -330,9 +337,7 @@ const removeBookmark = (bookmark) => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 	switch (message.request) {
 		case "get-actions":
-			clearActions();
-			getTabs();
-			getBookmarks();
+			resetOmni();
 			sendResponse({actions: actions});
 			break;
 		case "switch-tab":
@@ -446,10 +451,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 				closeTab(message.action);
 			}
 			break;
+		case "search":
+			chrome.search.query(
+				{text:message.query}
+			)
+			break;
 		}
 });
 
 // Get actions
-clearActions();
-getTabs();
-getBookmarks();
+resetOmni();
