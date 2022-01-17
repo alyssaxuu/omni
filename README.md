@@ -60,6 +60,8 @@ You can use a variety of commands with Omni to perform actions or filter your re
 - **/actions**: Search all available actions
 - **/remove**: Remove a bookmark or close a tab
 
+Feel free to suggest new commands for Omni by [making an issue](https://github.com/alyssaxuu/omni/issues/new).
+
 ## Self-hosting Omni
 You can run Omni locally without having to install it from the Chrome Store. Here's how:
 
