@@ -4,6 +4,7 @@ let newtaburl = "";
 // Clear actions and append default ones
 const clearActions = () => {
 	getCurrentTab().then((response) => {
+		actions = [];
 		const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
 		let muteaction = {title:"Mute tab", desc:"Mute the current tab", type:"action", action:"mute", emoji:true, emojiChar:"🔇", keycheck:true, keys:['⌥','⇧', 'M']};
 		let pinaction = {title:"Pin tab", desc:"Pin the current tab", type:"action", action:"pin", emoji:true, emojiChar:"📌", keycheck:true, keys:['⌥','⇧', 'P']};
