@@ -11,7 +11,7 @@ With Omni you can use Chrome like a pro. Manage tabs, bookmarks, your browser hi
 
 <a href="https://www.producthunt.com/posts/omni-3?utm_source=badge-top-post-badge&utm_medium=badge&utm_souce=badge-omni-3" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/top-post-badge.svg?post_id=326242&theme=light&period=daily" alt="Omni - The all-in-one tool to supercharge your productivity | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
 
-Made by [Alyssa X](https://alyssax.com)
+Made by [Alyssa X](https://twitter.com/alyssaxuu)
 
 ## Table of contents
 
@@ -59,6 +59,8 @@ You can use a variety of commands with Omni to perform actions or filter your re
 - **/history**: Search your browser history
 - **/actions**: Search all available actions
 - **/remove**: Remove a bookmark or close a tab
+
+Feel free to suggest new commands for Omni by [making an issue](https://github.com/alyssaxuu/omni/issues/new).
 
 ## Self-hosting Omni
 You can run Omni locally without having to install it from the Chrome Store. Here's how:
