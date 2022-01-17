@@ -1,9 +1,11 @@
+// Workaround to capture Esc key on certain sites
 var isOpen = false;
 document.onkeyup = (e) => {
 	if (e.key == "Escape" && isOpen) {
 		chrome.runtime.sendMessage({request:"close-omni"})
 	}
 }
+
 $(document).ready(function(){
 	var actions = [];
 	var isFiltered = false;
@@ -292,6 +294,9 @@ $(document).ready(function(){
 					} else {
 						window.open(addhttp($(".omni-extension input").val()), "_self");
 					}
+					break;
+				case "print":
+					window.print();
 					break;
 			}
 		}
