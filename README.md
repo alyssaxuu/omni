@@ -73,6 +73,7 @@ You can run Omni locally without having to install it from the Chrome Store. Her
 ## Libraries used
 
 - [jQuery](https://jquery.com/) - for better event handling and DOM manipulation
+- [dom-focus-lock](https://github.com/theKashey/dom-focus-lock) - to keep focus on the input field
 
 #
 
