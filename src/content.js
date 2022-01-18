@@ -20,7 +20,6 @@ $(document).ready(() => {
 		// Request actions from the background
 		chrome.runtime.sendMessage({request:"get-actions"}, (response) => {
 			actions = response.actions;
-			populateOmni();
 		});
 
 		// New tab page workaround
