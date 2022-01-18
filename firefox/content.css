@@ -1,0 +1,387 @@
+.omni-extension {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  font-weight: 400;
+}
+
+/* Scrollbar size */
+.omni-extension ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.omni-extension ::-webkit-scrollbar-thumb {
+  background-color: rgba(127, 127, 127, 0.6);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+  border-radius: 5px;
+}
+
+.omni-extension ::-webkit-scrollbar-thumb:vertical:hover,
+.omni-extension ::-webkit-scrollbar-thumb:horizontal:hover {
+  background-color: rgb(110, 110, 110);
+}
+
+.omni-extension ::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.omni-extension ::-webkit-scrollbar-thumb:vertical:active,
+.omni-extension ::-webkit-scrollbar-thumb:horizontal:active {
+  background: rgba(95, 91, 91, 1);
+}
+
+.omni-extension ::-webkit-scrollbar-corner {
+  background: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #1e2128;
+    --border: #35373e;
+    --text: #f1f1f1;
+    --text-2: #c5c6ca;
+    --text-3: #a5a5ae;
+    --select: #17191e;
+    --accent: #6068d2;
+    --accent-hover: #484fac;
+    --shortcut: #383e4a;
+    --placeholder: #63687b;
+    --background-2: #292d36;
+  }
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: #fafcff;
+    --border: #f2f3fb;
+    --text: #2b2d41;
+    --text-2: #2b2d41;
+    --text-3: #929db2;
+    --select: #eff3f9;
+    --accent: #6068d2;
+    --accent-hover: #484fac;
+    --shortcut: #dadeea;
+    --placeholder: #bac2d1;
+    --background-2: #292d36;
+  }
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  src: url("moz-extension://__MSG_@@extension_id__/assets/Inter-Regular.ttf");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  src: url("moz-extension://__MSG_@@extension_id__/assets/Inter-Medium.ttf");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  src: url("moz-extension://__MSG_@@extension_id__/assets/Inter-SemiBold.ttf");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  src: url("moz-extension://__MSG_@@extension_id__/assets/Inter-Bold.ttf");
+}
+.omni-extension * {
+  display: block;
+  width: unset;
+  box-shadow: unset;
+  padding: unset;
+  margin: unset;
+  background-color: unset;
+  border-radius: unset;
+}
+.omni-extension .omni-item-details * {
+  line-height: normal;
+}
+.omni-extension {
+  font-family: Inter !important;
+  z-index: 99999999999;
+}
+.omni-extension #omni-wrap {
+  position: fixed;
+  width: 700px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  margin: auto;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  z-index: 9999999999;
+  height: 540px;
+  transition: all 0.2s cubic-bezier(0.05, 0.03, 0.35, 1);
+  pointer-events: all;
+}
+.omni-extension #omni {
+  position: absolute;
+  width: 100%;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  top: 0px;
+  left: 0px;
+  z-index: 9999999998;
+  height: fit-content;
+  transition: all 0.2s cubic-bezier(0.05, 0.03, 0.35, 1);
+  display: block;
+}
+.omni-closing #omni {
+  transform: scale(0.9);
+  opacity: 0;
+}
+.omni-closing {
+  pointer-events: none;
+  display: none !important;
+}
+.omni-extension #omni-overlay {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: #000;
+  z-index: 9999;
+  opacity: 0.6;
+  transition: all 0.1s cubic-bezier(0.05, 0.03, 0.35, 1);
+}
+.omni-closing #omni-overlay {
+  opacity: 0 !important;
+}
+.omni-extension #omni-head {
+  height: 50px;
+  line-height: 50px;
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+  border-bottom: 1px solid var(--border);
+}
+.omni-extension #omni-name {
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+  float: left;
+}
+.omni-extension #omni-close {
+  color: var(--text-3);
+  float: right;
+  font-size: 12px;
+  font-weight: 500;
+}
+.omni-extension #omni-close span {
+  margin-left: 3px;
+}
+.omni-extension .omni-shortcut {
+  display: inline-block !important;
+  font-size: 13px;
+  border-radius: 5px;
+  background-color: var(--shortcut);
+  color: var(--text);
+  text-align: center;
+  height: 20px;
+  line-height: 20px;
+  min-width: 20px;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+.omni-extension input {
+  background: transparent;
+  border: 0px;
+  outline: none;
+  font-size: 20px;
+  font-weight: 400;
+  height: 50px;
+  width: 92%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  color: var(--text);
+  caret-color: var(--accent);
+  font-family: Inter !important;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  box-sizing: border-box;
+  outline: none;
+  border: 0px;
+  box-shadow: none;
+}
+.omni-extension ::placeholder {
+  color: var(--placeholder);
+  opacity: 1;
+}
+.omni-extension :-ms-input-placeholder {
+  color: var(--placeholder);
+}
+.omni-extension ::-ms-input-placeholder {
+  color: var(--placeholder);
+}
+.omni-extension #omni-list {
+  width: 100%;
+  overflow: auto;
+  height: 100%;
+  max-height: 400px;
+  border-top: 1px solid var(--border);
+  position: relative;
+}
+.omni-extension .omni-item {
+  height: 60px;
+  width: 100%;
+}
+.omni-extension .omni-item:hover {
+  cursor: pointer;
+}
+.omni-extension .omni-item-active {
+  background-color: var(--select);
+  position: relative;
+}
+.omni-extension .omni-item-active:before {
+  height: 100%;
+  position: absolute;
+  display: block;
+  content: "";
+  width: 2px;
+  background-color: var(--accent);
+}
+.omni-extension .omni-select {
+  float: right;
+  vertical-align: middle;
+  color: var(--text-3);
+  font-size: 12px;
+  font-weight: 500;
+  display: none;
+  margin-top: 20px;
+  margin-right: 5%;
+}
+.omni-extension .omni-select span {
+  margin-left: 3px;
+}
+.omni-extension .omni-item-active .omni-select {
+  display: block !important;
+}
+.omni-extension .omni-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: 5%;
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: -12px;
+}
+.omni-extension .omni-emoji-action {
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: -12px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  margin-left: 5%;
+  font-size: 18px;
+}
+.omni-extension .omni-item-details {
+  display: inline-block !important;
+  margin-left: 10px;
+  vertical-align: middle;
+  margin-top: 10px;
+}
+.omni-extension .omni-item-name {
+  color: var(--text-2);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 460px;
+}
+.omni-extension .omni-item-active .omni-item-name {
+  color: var(--text) !important;
+}
+.omni-extension .omni-item-desc {
+  color: var(--text-3);
+  margin-top: 5px;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 460px;
+}
+.omni-extension #omni-footer {
+  height: 45px;
+  line-height: 45px;
+  border-top: 1px solid var(--border);
+  width: 92%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.omni-extension #omni-results {
+  color: var(--text-3);
+  font-size: 12px;
+  font-weight: 500;
+  float: left;
+}
+.omni-extension #omni-arrows {
+  color: var(--text-3);
+  font-size: 12px;
+  font-weight: 500;
+  float: right;
+}
+.omni-extension #omni-arrows span {
+  margin-left: 3px;
+  margin-right: 3px;
+}
+.omni-extension .omni-keys {
+  float: right;
+  vertical-align: middle;
+  font-weight: 500;
+  margin-top: 20px;
+  margin-right: 5%;
+}
+.omni-extension .omni-item-active .omni-keys {
+  display: none !important;
+}
+.omni-extension .omni-keys span {
+  margin-left: 3px;
+}
+#omni-extension-toast {
+  text-align: center;
+  font-family: Inter;
+  font-weight: 500;
+  font-size: 14px;
+  position: fixed;
+  width: -moz-max-content;
+  color: var(--text);
+  bottom: 10px;
+  left: 0px;
+  right: 0px;
+  margin: auto;
+  background: var(--background);
+  border-radius: 5px;
+  height: 40px;
+  line-height: 40px;
+  display: block;
+  padding-left: 10px;
+  padding-right: 10px;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.2s cubic-bezier(0.05, 0.03, 0.35, 1);
+  z-index: 99999999;
+  display: block;
+}
+#omni-extension-toast img {
+  display: inline-block;
+  margin-right: 5px;
+  vertical-align: middle;
+  margin-bottom: 2px;
+}
+.omni-show-toast {
+  bottom: 20px !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
