@@ -3,9 +3,9 @@
 ![Preview](preview.gif)
 <br>
 <br>
-The most powerful interface for Chrome 🔥
+The most powerful interface for your browser 🔥
 
-With Omni you can use Chrome like a pro. Manage tabs, bookmarks, your browser history, perform all sorts of actions and more with a simple command interface.
+With Omni you can use your browser like a pro. Manage tabs, bookmarks, your browser history, perform all sorts of actions and more with a simple command interface.
 
 👉 Get it now [for Chrome](https://chrome.google.com/webstore/detail/omni/mapjgeachilmcbbokkgcbgpbakaaeehi?hl=en&authuser=0) and [for Firefox](https://addons.mozilla.org/en-GB/firefox/addon/omnisearch/)
 
