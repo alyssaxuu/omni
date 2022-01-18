@@ -128,15 +128,13 @@ browser.runtime.onInstalled.addListener((object) => {
     const s = scripts.length;
 
     for (let i = 0; i < s; i++) {
-      browser.scripting.executeScript({
-        target: { tabId: tab.id },
-        files: [scripts[i]],
+      browser.tabs.executeScript(tab.id, {
+        file: scripts[i]
       });
     }
 
-    browser.scripting.insertCSS({
-      target: { tabId: tab.id },
-      files: [manifest.content_scripts[0].css[0]],
+    browser.tabs.insertCSS(tab.id, {
+      file: manifest.content_scripts[0].css[0],
     });
   };
 
@@ -475,8 +473,8 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
 			}
 			break;
 		case "search":
-			browser.search.query(
-				{text:message.query}
+			browser.search.search(
+				{query:message.query}
 			)
 			break;
 		case "restore-new-tab":

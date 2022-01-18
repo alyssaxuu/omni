@@ -1,8 +1,7 @@
 {
 	"name": "Omni",
 	"description": "Supercharge Chrome with commands, shortcuts, and more",
-	"offline_enabled": true,
-	"version": "1.4.2",
+	"version": "1.4.3",
 	"manifest_version": 2,
 	"browser_action": {
 		"default_icon": {
@@ -40,6 +39,6 @@
 	],
 	"web_accessible_resources": ["content.html", "newtab.html", "assets/*", "popup.css", "popup.js"],
 	"permissions": [
-		"tabs", "activeTab", "bookmarks", "browsingData", "history", "scripting", "search"
+		"tabs", "activeTab", "bookmarks", "browsingData", "history", "search"
 	]
 }
