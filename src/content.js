@@ -14,6 +14,9 @@ $(document).ready(() => {
 	$.get(chrome.runtime.getURL('/content.html'), (data) => {
 		$(data).appendTo('body');
 
+		// Get checkmark image for toast
+		$("#omni-extension-toast img").attr("src", chrome.runtime.getURL("assets/check.svg"));
+
 		// Request actions from the background
 		chrome.runtime.sendMessage({request:"get-actions"}, (response) => {
 			actions = response.actions;
@@ -114,6 +117,8 @@ $(document).ready(() => {
 			$("#omni-extension").removeClass("omni-closing");
 			window.setTimeout(() => {
 				$("#omni-extension input").focus();
+				focusLock.on($("#omni-extension input").get(0));
+				$("#omni-extension input").focus();
 			}, 100);
 		});
 	}
@@ -132,6 +137,15 @@ $(document).ready(() => {
 	function hoverItem() {
 		$(".omni-item-active").removeClass("omni-item-active");
 		$(this).addClass("omni-item-active");
+	}
+
+	// Show a toast when an action has been performed
+	function showToast(action) {
+		$("#omni-extension-toast span").html('"'+action.title+'" has been successfully performed');
+		$("#omni-extension-toast").addClass("omni-show-toast");
+		setTimeout(() => {
+			$(".omni-show-toast").removeClass("omni-show-toast");
+		}, 3000)
 	}
 
 	// Autocomplete commands. Since they all start with different letters, it can be the default behavior
@@ -273,9 +287,15 @@ $(document).ready(() => {
 			chrome.runtime.sendMessage({request:"remove", type:action.type, action:action});
 		} else if ($(".omni-extension input").val().toLowerCase().startsWith("/history")) {
 			if (e.ctrlKey || e.metaKey) {
-				window.open($(".omni-item-active").attr("data-url"), "_self");
-			} else {
 				window.open($(".omni-item-active").attr("data-url"));
+			} else {
+				window.open($(".omni-item-active").attr("data-url"), "_self");
+			}
+		} else if ($(".omni-extension input").val().toLowerCase().startsWith("/bookmarks")) {
+			if (e.ctrlKey || e.metaKey) {
+				window.open($(".omni-item-active").attr("data-url"));
+			} else {
+				window.open($(".omni-item-active").attr("data-url"), "_self");
 			}
 		} else {
 			chrome.runtime.sendMessage({request:action.action, tab:action, query:$(".omni-extension input").val()});
@@ -289,12 +309,13 @@ $(document).ready(() => {
 					break;
 				case "scroll-bottom":
 					window.scrollTo(0,document.body.scrollHeight);
+					showToast(action);
 					break;
 				case "scroll-top":
 					window.scrollTo(0,0);
 					break;
 				case "navigation":
-					if (e.ctrlKey) {
+					if (e.ctrlKey || e.metaKey) {
 						window.open(action.url);
 					} else {
 						window.open(action.url, "_self");
@@ -326,6 +347,14 @@ $(document).ready(() => {
 					break;
 				case "print":
 					window.print();
+					break;
+				case "remove-all":
+				case "remove-history":
+				case "remove-cookies":
+				case "remove-cache":
+				case "remove-local-storage":
+				case "remove-passwords":
+					showToast(action);
 					break;
 			}
 		}
