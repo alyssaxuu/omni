@@ -176,20 +176,23 @@ chrome.action.onClicked.addListener((tab) => {
 });
 
 // Listen for the open omni shortcut
-chrome.commands.onCommand.addListener((command) => {
+chrome.commands.onCommand.addListener(async (command) => {
 	if (command === "open-omni") {
-		getCurrentTab().then((response) => {
-			if (!response.url.includes("chrome://") && !response.url.includes("chrome.google.com")) {
-				chrome.tabs.sendMessage(response.id, {request: "open-omni"});
-			} else {
-				chrome.tabs.create({
-					url: "./newtab.html" 
-				}).then(() => {
-					newtaburl = response.url;
-					chrome.tabs.remove(response.id);
-				})
+		const response = await getCurrentTab();
+		if (!response.url.includes("chrome://") && !response.url.includes("chrome.google.com")) {
+			chrome.tabs.sendMessage(response.id, {request: "open-omni"});
+		} else {
+			const {id: newTabId} = await chrome.tabs.create({url: "./newtab.html"});
+			const listenerForNewTab = (tabId, info) => {
+				if (info.status === "complete" && tabId === newTabId) {
+					chrome.tabs.sendMessage(newTabId, {request: "open-omni"});
+					chrome.tabs.onUpdated.removeListener(listenerForNewTab); // remove this listener when finished
+				}
 			}
-		});
+			chrome.tabs.onUpdated.addListener(listenerForNewTab);
+			newtaburl = response.url;
+			chrome.tabs.remove(response.id);
+		}
 	}
 });
 
