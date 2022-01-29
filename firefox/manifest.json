@@ -1,6 +1,6 @@
 {
 	"name": "Omni",
-	"description": "Supercharge Chrome with commands, shortcuts, and more",
+	"description": "Supercharge Firefox with commands, shortcuts, and more",
 	"version": "1.4.3",
 	"manifest_version": 2,
 	"browser_action": {
