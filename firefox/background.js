@@ -428,7 +428,7 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
 			closeCurrentTab();
 			break;
 		case "search-history":
-			browser.history.search({text:message.query, maxResults:1000, startTime:31536000000*5}).then((data) => {
+			browser.history.search({text:message.query, maxResults:9e9, startTime:0}).then((data) => {
 				data.forEach((action, index) => {
 					action.type = "history";
 					action.emoji = true;
