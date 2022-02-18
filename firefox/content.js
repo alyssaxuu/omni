@@ -94,7 +94,7 @@ $(document).ready(() => {
 					});
 					keys += "</div>";
 			}
-			var img = "<img src='"+action.favIconUrl+"' alt='favicon' onerror='this.src=&quot;"+chrome.runtime.getURL("/assets/globe.svg")+"&quot;' class='omni-icon'>";
+			var img = "<img src='"+action.favIconUrl+"' alt='favicon' onerror='this.src=&quot;"+browser.runtime.getURL("/assets/globe.svg")+"&quot;' class='omni-icon'>";
 			if (action.emoji) {
 				img = "<span class='omni-emoji-action'>"+action.emojiChar+"</span>"
 			}
