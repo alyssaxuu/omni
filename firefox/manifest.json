@@ -1,7 +1,7 @@
 {
 	"name": "Omni",
 	"description": "Supercharge Firefox with commands, shortcuts, and more",
-	"version": "1.4.3",
+	"version": "1.4.4",
 	"manifest_version": 2,
 	"browser_action": {
 		"default_icon": {

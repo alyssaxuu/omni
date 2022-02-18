@@ -2,7 +2,7 @@
 	"name": "Omni - Bookmark, History, & Tab Manager",
 	"description": "Supercharge Chrome with commands, shortcuts, and more",
 	"offline_enabled": true,
-	"version": "1.4.5",
+	"version": "1.4.6",
 	"manifest_version": 3,
 	"action": {
 		"icons": {
