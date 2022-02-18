@@ -183,7 +183,7 @@ chrome.commands.onCommand.addListener((command) => {
 				chrome.tabs.sendMessage(response.id, {request: "open-omni"});
 			} else {
 				chrome.tabs.create({
-					url: "./newtab.html" 
+					url: "./newtab.html"	
 				}).then(() => {
 					newtaburl = response.url;
 					chrome.tabs.remove(response.id);
@@ -243,7 +243,7 @@ const getTabs = () => {
 // Get bookmarks to populate in the actions
 const getBookmarks = () => {
 	const process_bookmark = (bookmarks) => {
-		for (const bookmark of bookmarks) { 
+		for (const bookmark of bookmarks) {	
 			if (bookmark.url) {
 				actions.push({title:bookmark.title, desc:"Bookmark", id:bookmark.id, url:bookmark.url, type:"bookmark", action:"bookmark", emoji:true, emojiChar:"⭐️", keycheck:false})
 			}
@@ -430,7 +430,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 			closeCurrentTab();
 			break;
 		case "search-history":
-			chrome.history.search({text:message.query, maxResults:1000, startTime:31536000000*5}).then((data) => {
+			chrome.history.search({text:message.query, maxResults:0, startTime:0}).then((data) => {
 				data.forEach((action, index) => {
 					action.type = "history";
 					action.emoji = true;
