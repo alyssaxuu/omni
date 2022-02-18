@@ -84,7 +84,8 @@ $(document).ready(() => {
 	function populateOmniFilter(actions) {
 		isFiltered = true;
 		$("#omni-extension #omni-list").html("");
-		actions.forEach((action, index) => {
+		const renderRow = (index) => {
+			const action = actions[index]
 			var keys = "";
 			if (action.keycheck) {
 					keys = "<div class='omni-keys'>";
@@ -93,17 +94,23 @@ $(document).ready(() => {
 					});
 					keys += "</div>";
 			}
-			var img = "<img src='"+action.favIconUrl+"' alt='favicon' onerror='this.src=&quot;"+browser.runtime.getURL("/assets/globe.svg")+"&quot;' class='omni-icon'>";
+			var img = "<img src='"+action.favIconUrl+"' alt='favicon' onerror='this.src=&quot;"+chrome.runtime.getURL("/assets/globe.svg")+"&quot;' class='omni-icon'>";
 			if (action.emoji) {
 				img = "<span class='omni-emoji-action'>"+action.emojiChar+"</span>"
 			}
 			if (index != 0) {
-				$("#omni-extension #omni-list").append("<div class='omni-item' data-index='"+index+"' data-type='"+action.type+"' data-url='"+action.url+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.url+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>");
+				return $("<div class='omni-item' data-index='"+index+"' data-type='"+action.type+"' data-url='"+action.url+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.url+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>")[0]
 			} else {
-				$("#omni-extension #omni-list").append("<div class='omni-item omni-item-active' data-index='"+index+"' data-type='"+action.type+"' data-url='"+action.url+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.url+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>");
+				return $("<div class='omni-item omni-item-active' data-index='"+index+"' data-type='"+action.type+"' data-url='"+action.url+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.url+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>")[0]
 			}
-		})
-		$(".omni-extension #omni-results").html(actions.length+" results");
+		}
+		actions.length && new VirtualizedList.default($("#omni-extension #omni-list")[0], {
+			height: 400,
+			rowHeight: 60,
+			rowCount: actions.length,
+			renderRow,
+			onMount: () => $(".omni-extension #omni-results").html(actions.length+" results"),
+		});
 	}
 
 	// Open the omni
