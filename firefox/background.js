@@ -181,7 +181,7 @@ browser.commands.onCommand.addListener((command) => {
 				browser.tabs.sendMessage(response.id, {request: "open-omni"});
 			} else {
 				browser.tabs.create({
-					url: "./newtab.html" 
+					url: "./newtab.html"
 				}).then(() => {
 					newtaburl = response.url;
 					browser.tabs.remove(response.id);
@@ -241,7 +241,7 @@ const getTabs = () => {
 // Get bookmarks to populate in the actions
 const getBookmarks = () => {
 	const process_bookmark = (bookmarks) => {
-		for (const bookmark of bookmarks) { 
+		for (const bookmark of bookmarks) {
 			if (bookmark.url) {
 				actions.push({title:bookmark.title, desc:"Bookmark", id:bookmark.id, url:bookmark.url, type:"bookmark", action:"bookmark", emoji:true, emojiChar:"⭐️", keycheck:false})
 			}
@@ -279,6 +279,9 @@ const duplicateTab = (tab) => {
 	getCurrentTab().then((response) => {
 		browser.tabs.duplicate(response.id);
 	})
+}
+const createTab = (tab = {}) => {
+  browser.tabs.create(tab)
 }
 const createBookmark = (tab) => {
 	getCurrentTab().then((response) => {
@@ -373,6 +376,9 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
 		case "duplicate-tab":
 			duplicateTab(message.tab);
 			break;
+    case "new-tab":
+      createTab(message.tab);
+      break;
 		case "create-bookmark":
 			createBookmark(message.tab);
 			break;
