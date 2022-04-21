@@ -357,6 +357,7 @@ $(document).ready(() => {
 				case "remove-all":
 				case "remove-history":
 				case "remove-cookies":
+				case "remove-current-cookies":
 				case "remove-cache":
 				case "remove-local-storage":
 				case "remove-passwords":
