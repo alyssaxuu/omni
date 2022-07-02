@@ -11,6 +11,8 @@ With Omni you can use your browser like a pro. Manage tabs, bookmarks, your brow
 
 <a href="https://www.producthunt.com/posts/omni-3?utm_source=badge-top-post-badge&utm_medium=badge&utm_souce=badge-omni-3" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/top-post-badge.svg?post_id=326242&theme=light&period=daily" alt="Omni - The all-in-one tool to supercharge your productivity | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
 
+> You can support this project (and many others) through [GitHub Sponsors](https://github.com/sponsors/alyssaxuu)! ❤️
+
 Made by [Alyssa X](https://twitter.com/alyssaxuu)
 
 ## Table of contents
