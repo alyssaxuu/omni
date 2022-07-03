@@ -70,6 +70,7 @@ const clearActions = () => {
 			{title:"Clear all browsing data", desc:"Clear all of your browsing data", type:"action", action:"remove-all", emoji:true, emojiChar:"🧹", keycheck:false, keys:['⌘','D']},
 			{title:"Clear browsing history", desc:"Clear all of your browsing history", type:"action", action:"remove-history", emoji:true, emojiChar:"🗂", keycheck:false, keys:['⌘','D']},
 			{title:"Clear cookies", desc:"Clear all cookies", type:"action", action:"remove-cookies", emoji:true, emojiChar:"🍪", keycheck:false, keys:['⌘','D']},
+			{title:"Clear current site cookies", desc:"Clear cookies for the current tab", type:"action", action:"remove-current-cookies", emoji:true, emojiChar:"🍪", keycheck:false, keys:['⌘','D']},
 			{title:"Clear cache", desc:"Clear the cache", type:"action", action:"remove-cache", emoji:true, emojiChar:"🗄", keycheck:false, keys:['⌘','D']},
 			{title:"Clear local storage", desc:"Clear the local storage", type:"action", action:"remove-local-storage", emoji:true, emojiChar:"📦", keycheck:false, keys:['⌘','D']},
 			{title:"Clear passwords", desc:"Clear all saved passwords", type:"action", action:"remove-passwords", emoji:true, emojiChar:"🔑", keycheck:false, keys:['⌘','D']},
@@ -328,6 +329,15 @@ const clearBrowsingData = () => {
 const clearCookies = () =>{
 	chrome.browsingData.removeCookies({"since": 0});
 }
+const clearCurrentCookie = () => {
+	getCurrentTab().then((response) => {
+		chrome.browsingData.remove({
+			"origins": [response.url]
+		}, {
+			"cookies": true
+		});
+	});
+}
 const clearCache = () => {
 	chrome.browsingData.removeCache({"since": 0});
 }
@@ -401,6 +411,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 			break;
 		case "remove-cookies":
 			clearCookies();
+			break;
+		case "remove-current-cookies":
+			clearCurrentCookie();
 			break;
 		case "remove-cache":
 			clearCache();
