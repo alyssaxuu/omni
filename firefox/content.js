@@ -66,7 +66,7 @@ $(document).ready(() => {
 					});
 					keys += "</div>";
 			}
-			
+
 			// Check if the action has an emoji or a favicon
 			if (!action.emoji) {
 				var onload = 'if ("naturalHeight" in this) {if (this.naturalHeight + this.naturalWidth === 0) {this.onerror();return;}} else if (this.width + this.height == 0) {this.onerror();return;}';
@@ -280,7 +280,7 @@ $(document).ready(() => {
 				}
 			});
 		}
-		
+
 		$(".omni-extension #omni-results").html($("#omni-extension #omni-list .omni-item:visible").length+" results");
 		$(".omni-item-active").removeClass("omni-item-active");
 		$(".omni-extension #omni-list .omni-item:visible").first().addClass("omni-item-active");
@@ -333,8 +333,8 @@ $(document).ready(() => {
 					elem.requestFullscreen();
 					break;
 				case "new-tab":
-					window.open("");
-					break;
+          browser.runtime.sendMessage({request:"new-tab"})
+          break;
 				case "email":
 					window.open("mailto:");
 					break;
