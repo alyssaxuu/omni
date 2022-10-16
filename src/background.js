@@ -183,7 +183,7 @@ chrome.commands.onCommand.addListener((command) => {
 				chrome.tabs.sendMessage(response.id, {request: "open-omni"});
 			} else {
 				chrome.tabs.create({
-					url: "./newtab.html"	
+					url: "./newtab.html"
 				}).then(() => {
 					newtaburl = response.url;
 					chrome.tabs.remove(response.id);
@@ -243,7 +243,7 @@ const getTabs = () => {
 // Get bookmarks to populate in the actions
 const getBookmarks = () => {
 	const process_bookmark = (bookmarks) => {
-		for (const bookmark of bookmarks) {	
+		for (const bookmark of bookmarks) {
 			if (bookmark.url) {
 				actions.push({title:bookmark.title, desc:"Bookmark", id:bookmark.id, url:bookmark.url, type:"bookmark", action:"bookmark", emoji:true, emojiChar:"⭐️", keycheck:false})
 			}
@@ -475,9 +475,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 			}
 			break;
 		case "search":
-			chrome.search.query(
-				{text:message.query}
-			)
+			if (message.openInNewTab) {
+				chrome.search.query({ text: message.query, disposition: 'NEW_TAB' });
+			} else {
+				chrome.search.query({ text: message.query });
+			}
 			break;
 		case "restore-new-tab":
 			restoreNewTab();
