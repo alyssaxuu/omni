@@ -65,7 +65,7 @@ $(document).ready(() => {
 					});
 					keys += "</div>";
 			}
-			
+
 			// Check if the action has an emoji or a favicon
 			if (!action.emoji) {
 				var onload = 'if ("naturalHeight" in this) {if (this.naturalHeight + this.naturalWidth === 0) {this.onerror();return;}} else if (this.width + this.height == 0) {this.onerror();return;}';
@@ -279,7 +279,7 @@ $(document).ready(() => {
 				}
 			});
 		}
-		
+
 		$(".omni-extension #omni-results").html($("#omni-extension #omni-list .omni-item:visible").length+" results");
 		$(".omni-item-active").removeClass("omni-item-active");
 		$(".omni-extension #omni-list .omni-item:visible").first().addClass("omni-item-active");
@@ -304,7 +304,7 @@ $(document).ready(() => {
 				window.open($(".omni-item-active").attr("data-url"), "_self");
 			}
 		} else {
-			chrome.runtime.sendMessage({request:action.action, tab:action, query:$(".omni-extension input").val()});
+			chrome.runtime.sendMessage({ request: action.action, tab: action, query: $(".omni-extension input").val(), openInNewTab: e.ctrlKey || e.metaKey });
 			switch (action.action) {
 				case "bookmark":
 					if (e.ctrlKey || e.metaKey) {
