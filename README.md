@@ -52,6 +52,8 @@ On Mac you can change the theme by clicking on the Apple menu (on the top left),
 
 On Windows it depends on the OS version. [Here is a guide for Windows 11 and 10.](https://support.microsoft.com/en-us/windows/change-desktop-background-and-colors-176702ca-8e24-393b-15f2-b15b38f69de6#ID0EBF=Windows_11)
 
+On other OS's you could also change your chrome theme to dark. [Guide on dev.to](https://dev.to/felixdusengimana/how-to-enable-dark-mode-in-chrome-on-ubuntuno-code-apps-themes-2p41)
+
 After switching the theme you might need to restart your browser.
 
 ## List of commands
