@@ -6,6 +6,30 @@ document.onkeyup = (e) => {
 	}
 }
 
+function escapeChars(str) {
+  // 替换<, >, {, }, (, ), ;字符为实体字符
+  return str.replace(/[<>{}();]/g, function(match) {
+    switch (match) {
+      case '<':
+        return '&lt;';
+      case '>':
+        return '&gt;';
+      case '{':
+        return '&#123;';
+      case '}':
+        return '&#125;';
+      case '(':
+        return '&#40;';
+      case ')':
+        return '&#41;';
+      case ';':
+        return '&#59;';
+      default:
+        return match;
+    }
+  });
+}
+
 $(document).ready(() => {
 	var actions = [];
 	var isFiltered = false;
@@ -98,9 +122,9 @@ $(document).ready(() => {
 				img = "<span class='omni-emoji-action'>"+action.emojiChar+"</span>"
 			}
 			if (index != 0) {
-				return $("<div class='omni-item' data-index='"+index+"' data-type='"+action.type+"' data-url='"+action.url+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.url+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>")[0]
+				return $("<div class='omni-item' data-index='"+index+"' data-type='"+action.type+"' data-url='"+escapeChars(action.url)+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.url+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>")[0]
 			} else {
-				return $("<div class='omni-item omni-item-active' data-index='"+index+"' data-type='"+action.type+"' data-url='"+action.url+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.url+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>")[0]
+				return $("<div class='omni-item omni-item-active' data-index='"+index+"' data-type='"+action.type+"' data-url='"+escapeChars(action.url)+"'>"+img+"<div class='omni-item-details'><div class='omni-item-name'>"+action.title+"</div><div class='omni-item-desc'>"+action.url+"</div></div>"+keys+"<div class='omni-select'>Select <span class='omni-shortcut'>⏎</span></div></div>")[0]
 			}
 		}
 		actions.length && new VirtualizedList.default($("#omni-extension #omni-list")[0], {
