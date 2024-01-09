@@ -304,7 +304,7 @@ $(document).ready(() => {
 				window.open($(".omni-item-active").attr("data-url"), "_self");
 			}
 		} else {
-			chrome.runtime.sendMessage({request:action.action, tab:action, query:$(".omni-extension input").val()});
+			chrome.runtime.sendMessage({request:action.action, disposition:(e.altKey||e.metaKey)? "NEW_TAB":"CURRENT_TAB", tab:action, query:$(".omni-extension input").val()});
 			switch (action.action) {
 				case "bookmark":
 					if (e.ctrlKey || e.metaKey) {
