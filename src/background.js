@@ -8,10 +8,10 @@ const clearActions = () => {
 		const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
 		let muteaction = {title:"Mute tab", desc:"Mute the current tab", type:"action", action:"mute", emoji:true, emojiChar:"🔇", keycheck:true, keys:['⌥','⇧', 'M']};
 		let pinaction = {title:"Pin tab", desc:"Pin the current tab", type:"action", action:"pin", emoji:true, emojiChar:"📌", keycheck:true, keys:['⌥','⇧', 'P']};
-		if (response.mutedInfo.muted) {
+		if (response?.mutedInfo?.muted) {
 			muteaction = {title:"Unmute tab", desc:"Unmute the current tab", type:"action", action:"unmute", emoji:true, emojiChar:"🔈", keycheck:true, keys:['⌥','⇧', 'M']};
 		}
-		if (response.pinned) {
+		if (response?.pinned) {
 			pinaction = {title:"Unpin tab", desc:"Unpin the current tab", type:"action", action:"unpin", emoji:true, emojiChar:"📌", keycheck:true, keys:['⌥','⇧', 'P']};
 		}
 		actions = [
@@ -475,10 +475,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 			}
 			break;
 		case "search":
-			chrome.search.query(
-				{text:message.query,disposition:message.disposition}
-			)
-			break;
+			var query = () =>
+				chrome.search.query({
+					text: message.query,
+					disposition: message.disposition,
+				});
+			if (message.__inNewTab__) {
+				setTimeout(query, 125);
+			} else {
+				query();
+			}
+	 		break;
 		case "restore-new-tab":
 			restoreNewTab();
 			break;
