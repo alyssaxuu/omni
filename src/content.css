@@ -1,3 +1,6 @@
+.omni-extension {
+	text-align: left;
+}
 /* Scrollbar size */
 .omni-extension ::-webkit-scrollbar {
 	width: 10px;

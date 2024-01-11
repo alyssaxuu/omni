@@ -20,10 +20,11 @@ $(document).ready(() => {
 		// Request actions from the background
 		chrome.runtime.sendMessage({request:"get-actions"}, (response) => {
 			actions = response.actions;
+			populateOmni()
 		});
 
 		// New tab page workaround
-		if (window.location.href == "chrome-extension://mpanekjjajcabgnlbabmopeenljeoggm/newtab.html") {
+		if (window.__inNewTab__) {
 			isOpen = true;
 			$("#omni-extension").removeClass("omni-closing");
 			window.setTimeout(() => {
@@ -131,7 +132,7 @@ $(document).ready(() => {
 
 	// Close the omni
 	function closeOmni() {
-		if (window.location.href == "chrome-extension://mpanekjjajcabgnlbabmopeenljeoggm/newtab.html") {
+		if (window.__inNewTab__) {
 			chrome.runtime.sendMessage({request:"restore-new-tab"});
 		} else {
 			isOpen = false;
@@ -304,7 +305,8 @@ $(document).ready(() => {
 				window.open($(".omni-item-active").attr("data-url"), "_self");
 			}
 		} else {
-			chrome.runtime.sendMessage({request:action.action, tab:action, query:$(".omni-extension input").val()});
+			var disposition = window.__inNewTab__ ? "CURRENT_TAB" : e.altKey || e.metaKey ? "NEW_TAB" : "CURRENT_TAB";
+			chrome.runtime.sendMessage({request:action.action,__inNewTab__:window.__inNewTab__, disposition:disposition, tab:action, query:$(".omni-extension input").val()});
 			switch (action.action) {
 				case "bookmark":
 					if (e.ctrlKey || e.metaKey) {
