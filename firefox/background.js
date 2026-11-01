@@ -408,6 +408,7 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
 			break;
 		case "remove-passwords":
 			clearPasswords();
+			break;
 		case "history": // Fallthrough
 		case "downloads":
 		case "extensions":
